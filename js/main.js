@@ -7,111 +7,137 @@
 /* ── DONNÉES PAR DÉFAUT ── */
 const DEFAULT_DATA = {
   hero: {
-    subtitle: "Portfolio Professionnel",
-    name: "ATTOH-MENSAH",
-    firstname: "Yao Pédro-Ebenezer",
-    title: "Ingénieur | Innovateur",
-    description: "Passionné par les solutions techniques innovantes et les défis complexes. Toujours prêt à relever de nouveaux défis et à contribuer à des projets ambitieux.",
+    subtitle: "GMP — ESIG Global Success",
+    name: "TOUDJI",
+    firstname: "KOKOUVI ÉDOUARD",
+    title: "Génie Mécanique & Productique",
+    description: "Étudiant en GMP, passionné par la conception mécanique, l'automatisation industrielle et les solutions techniques innovantes. Disponible pour stages et opportunités.",
     cvLink: "Media/cv.pdf",
     photo: "",
     stats: [
-      { num: "5+", label: "Projets réalisés" },
-      { num: "3+", label: "Ans d'études" },
+      { num: "4", label: "SAE réalisées" },
+      { num: "2+", label: "Ans d'études" },
       { num: "∞", label: "Motivation" }
     ]
   },
   introduction: {
     title: "Qui suis-je ?",
-    text: "Je suis Yao Pédro-Ebenezer ATTOH-MENSAH, un ingénieur passionné par l'innovation et les nouvelles technologies. Mon parcours m'a permis de développer des compétences solides dans mon domaine, alliant rigueur technique et créativité.\n\nJe crois profondément en la puissance de la collaboration et de l'apprentissage continu. Chaque projet est pour moi une opportunité de repousser mes limites et de créer de la valeur.",
+    text: "Je suis TOUDJI Kokouvi Édouard, étudiant en BUT Génie Mécanique & Productique à l'ESIG Global Success de Lomé, au Togo. Passionné par la mécanique, l'automatisme et l'électrotechnique, je mets tout en œuvre pour maîtriser les outils et méthodes de l'ingénieur moderne.\n\nChaque projet est pour moi une occasion d'apprendre, de collaborer et de proposer des solutions techniques rigoureuses et innovantes. Je suis disponible pour des stages et toute opportunité professionnelle enrichissante.",
     image: ""
   },
   about: {
-    text: "Étudiant et professionnel ambitieux, je combine expertise technique et vision stratégique pour concevoir des solutions innovantes. Mon approche rigoureuse et créative me permet de relever les défis les plus complexes avec détermination.\n\nEngagé dans une démarche d'amélioration continue, je cherche constamment à élargir mes connaissances et à appliquer les meilleures pratiques dans chacun de mes projets.",
+    text: "Étudiant en Génie Mécanique & Productique, je combinerigueur technique et créativité pour concevoir des solutions adaptées aux enjeux industriels actuels. Mon parcours à l'ESIG Global Success m'a permis de développer des compétences solides en conception mécanique, fabrication, automatisme et électrotechnique.\n\nEngagé dans une démarche d'amélioration continue, je participe activement aux projets SAE qui me permettent de confronter mes acquis théoriques à des problématiques concrètes de terrain.",
     image: "",
-    qualities: ["Rigoureux", "Créatif", "Autonome", "Curieux", "Leadership"],
-    values: ["Excellence", "Intégrité", "Innovation", "Collaboration", "Impact"]
+    qualities: ["Rigoureux", "Créatif", "Curieux", "Autonome", "Esprit d'équipe"],
+    values: ["Excellence", "Sécurité", "Innovation", "Qualité", "Développement durable"]
   },
   education: [
     {
-      school: "Université / Grande École",
-      degree: "Diplôme d'Ingénieur / Master",
+      school: "ESIG Global Success — Lomé, Togo",
+      degree: "BUT Génie Mécanique & Productique",
       year: "2023 — En cours",
-      description: "Formation en ingénierie avec spécialisation dans votre domaine. Acquisition de compétences théoriques et pratiques à travers des projets concrets et des stages professionnels."
+      description: "Formation en conception mécanique, fabrication, automatisme et électrotechnique. Réalisation de projets concrets (SAE) intégrant analyse de systèmes, modélisation 3D et mise en œuvre technique."
     },
     {
-      school: "Lycée d'Excellence",
+      school: "Lycée — Lomé, Togo",
       degree: "Baccalauréat Série C",
       year: "2022",
-      description: "Baccalauréat scientifique avec mention, spécialisation mathématiques et sciences physiques."
+      description: "Baccalauréat scientifique avec spécialisation mathématiques et sciences physiques."
     }
   ],
   skills: [
     {
-      name: "Compétence Technique 1",
-      category: "Domaine Principal",
+      category: "Conception & CAO",
       icon: "⚙️",
-      tags: ["Outil A", "Outil B", "Méthode C"]
+      description: "",
+      tags: ["SolidWorks", "CATIA", "AutoCAD", "Modélisation 3D", "Mise en plan"]
     },
     {
-      name: "Compétence Technique 2",
-      category: "Domaine Secondaire",
-      icon: "💻",
-      tags: ["Langage X", "Framework Y", "Technologie Z"]
+      category: "Fabrication & Usinage",
+      icon: "🔧",
+      description: "",
+      tags: ["Tournage", "Fraisage", "Tolérancement", "Contrôle qualité", "Ébavurage", "Traitement de surface"]
     },
     {
-      name: "Analyse & Méthode",
-      category: "Méthodologie",
+      category: "Électrotechnique",
+      icon: "⚡",
+      description: "",
+      tags: ["Moteurs asynchrones", "Schémas électriques", "Appareillage", "Câblage", "Lecture de plans"]
+    },
+    {
+      category: "Automatisme",
+      icon: "🤖",
+      description: "",
+      tags: ["Grafcet", "Logique combinatoire", "Systèmes séquentiels", "Analyse fonctionnelle"]
+    },
+    {
+      category: "Analyse & Méthode",
       icon: "📐",
-      tags: ["Analyse système", "Rapport technique", "Gestion de projet"]
+      description: "",
+      tags: ["FAST", "SADT", "Analyse de besoin", "AMDEC", "Rapport technique"]
     },
     {
-      name: "Compétences Transversales",
-      category: "Soft Skills",
+      category: "Transversales",
       icon: "👥",
-      tags: ["Travail en équipe", "Communication", "Adaptabilité", "Rigueur"]
+      description: "",
+      tags: ["Travail en équipe", "Gestion de projet", "Communication", "Rigueur", "Sécurité"]
     }
   ],
   experience: [
     {
-      role: "Votre poste ici",
-      company: "Entreprise / Organisation",
-      period: "2024 — Présent",
-      type: "Stage / CDI / CDD",
-      description: "Description de vos missions, responsabilités et réalisations durant cette expérience. Mettez en avant vos accomplissements et l'impact de votre travail.",
-      tags: ["Compétence 1", "Compétence 2", "Outil X"]
+      role: "Table ergonomique motorisée",
+      company: "Semaine de professionnalisation — ESIG",
+      period: "2024",
+      type: "Projet pratique",
+      description: "Réalisation complète d'une table ergonomique, pliable et motorisée dans le cadre de la semaine de professionnalisation. Conception mécanique (analyse du besoin, mécanismes de pliage, modélisation 3D sous SolidWorks), finition (ébavurage, ponçage, traitement de surface), et gestion de projet en équipe.",
+      tags: ["SolidWorks", "Conception mécanique", "Travail en équipe", "Traitement de surface"]
     }
   ],
   projects: [
     {
-      name: "Projet Phare 1",
-      category: "Catégorie",
-      description: "Description de votre projet le plus important. Expliquez le contexte, vos contributions et les résultats obtenus.",
+      name: "SAE 1 — Analyse d'un système électrotechnique simple",
+      category: "Électrotechnique",
+      description: "Analyse complète d'un système électrotechnique monophasé : étude de la structure, du fonctionnement et des performances. Réalisation de mesures et interprétation des résultats.",
       image: "",
-      tags: ["Technologie", "Méthode", "Outil"]
+      tags: ["Électrotechnique", "Mesures", "Analyse", "Rapport technique"]
     },
     {
-      name: "Projet 2",
-      category: "Catégorie",
-      description: "Description d'un autre projet significatif de votre parcours.",
+      name: "SAE 2 — Conception d'un automatisme séquentiel",
+      category: "Automatisme",
+      description: "Conception et validation d'un automatisme séquentiel à partir d'un cahier des charges. Modélisation Grafcet, analyse logique combinatoire et mise en œuvre simulée.",
       image: "",
-      tags: ["Tag 1", "Tag 2"]
+      tags: ["Grafcet", "Automatisme", "Logique séquentielle", "Cahier des charges"]
+    },
+    {
+      name: "SAE 3 — Conception mécanique d'un sous-ensemble",
+      category: "Conception",
+      description: "Conception et modélisation 3D d'un sous-ensemble mécanique, avec mise en plan détaillée, spécification des tolérances et choix des matériaux adaptés.",
+      image: "",
+      tags: ["SolidWorks", "Cotation", "Tolérancement", "Choix matériaux", "Mise en plan"]
+    },
+    {
+      name: "SAE 4 — Amélioration de l'éclairage et de la ventilation en atelier",
+      category: "Ergonomie",
+      description: "Étude et mise en œuvre de solutions techniques pour optimiser les conditions de travail en atelier de génie mécanique : systèmes LED, ventilation et conformité aux normes.",
+      image: "",
+      tags: ["Analyse ergonomique", "Systèmes LED", "Ventilation", "Normes & validation", "Organisation"]
     }
   ],
   testimonials: [
     {
-      author: "Prénom Nom",
-      role: "Poste, Entreprise",
-      text: "Témoignage positif sur votre travail et votre professionnalisme. Un collaborateur, professeur ou encadrant parle de votre sérieux et de vos compétences.",
+      author: "Encadrant ESIG",
+      role: "Professeur, ESIG Global Success",
+      text: "Édouard fait preuve d'une rigueur et d'un sérieux remarquables dans tous ses projets. Sa capacité à analyser les problèmes techniques et à proposer des solutions adaptées est un vrai atout pour son groupe.",
       rating: 5,
-      initials: "PN"
+      initials: "EE"
     }
   ],
   blog: [
     {
-      title: "Mon premier article — À personnaliser",
-      date: "2025-01-15",
-      tag: "Ingénierie",
-      summary: "Résumé de votre article. Partagez vos réflexions, vos apprentissages ou vos expériences dans votre domaine d'expertise.",
+      title: "Retour sur la SAE 4 : optimiser l'éclairage et la ventilation en atelier",
+      date: "2025-12-01",
+      tag: "GMP",
+      summary: "À travers ce projet, j'ai découvert comment l'ingénierie peut améliorer les conditions de travail. Voici les grandes lignes de notre démarche : analyse ergonomique, choix techniques et mise en conformité.",
       link: "#"
     }
   ],
@@ -119,54 +145,61 @@ const DEFAULT_DATA = {
     {
       icon: "🎓",
       date: "2022",
-      title: "Obtention du Baccalauréat",
-      description: "Début du parcours supérieur après l'obtention du baccalauréat avec mention.",
+      title: "Baccalauréat Série C",
+      description: "Obtention du baccalauréat scientifique, spécialité mathématiques et sciences physiques, à Lomé, Togo.",
       done: true
     },
     {
       icon: "📚",
       date: "2023",
-      title: "Entrée en formation d'ingénieur",
-      description: "Intégration d'une formation d'excellence pour acquérir les bases techniques solides.",
+      title: "Entrée en BUT GMP — ESIG Global Success",
+      description: "Intégration de la formation Génie Mécanique & Productique. Début des SAE et des cours techniques fondamentaux.",
+      done: true
+    },
+    {
+      icon: "🔧",
+      date: "2024",
+      title: "Semaine de professionnalisation",
+      description: "Réalisation d'une table ergonomique motorisée en équipe : conception, usinage, finition et gestion de projet.",
       done: true
     },
     {
       icon: "🚀",
       date: "2025",
-      title: "Premier stage professionnel",
-      description: "Mise en pratique des compétences acquises dans un environnement professionnel stimulant.",
+      title: "Stage professionnel",
+      description: "Mise en pratique des compétences acquises en GMP au sein d'une entreprise industrielle.",
       done: false
     },
     {
       icon: "🎯",
       date: "2026",
-      title: "Diplôme & Insertion professionnelle",
-      description: "Obtention du diplôme et intégration dans une entreprise innovante pour contribuer à des projets d'envergure.",
+      title: "Obtention du BUT & insertion professionnelle",
+      description: "Validation du diplôme et intégration dans un environnement industriel stimulant pour contribuer à des projets techniques d'envergure.",
       done: false
     }
   ],
   inspirations: [
     {
-      name: "Elon Musk",
-      role: "Entrepreneur, Innovateur",
-      description: "Sa vision à long terme et sa capacité à transformer des industries entières à travers des projets ambitieux m'inspirent profondément."
+      name: "Nikola Tesla",
+      role: "Ingénieur & Inventeur",
+      description: "Son génie en électrotechnique et sa capacité à transformer des concepts abstraits en innovations concrètes m'inspirent profondément dans mon parcours en GMP."
     },
     {
-      name: "Votre Inspiration",
-      role: "Rôle & Organisation",
-      description: "Décrivez ce qui vous inspire chez cette personne et comment cela influence votre propre parcours et vos ambitions."
+      name: "Elon Musk",
+      role: "Entrepreneur & Ingénieur",
+      description: "Sa vision industrielle audacieuse — de SpaceX à Tesla — démontre que l'ingénierie peut repousser toutes les limites. Une source de motivation permanente."
     }
   ],
   objective: {
     title: "Mon Objectif Professionnel",
-    text: "Mon objectif est de mettre mes compétences techniques et ma créativité au service de projets innovants qui ont un impact positif réel sur la société. Je souhaite continuer à apprendre, à progresser et à collaborer avec des équipes passionnées pour relever les défis technologiques de demain.\n\nÀ court terme, je vise à intégrer une entreprise dynamique où je pourrai contribuer significativement tout en développant mon expertise. À long terme, j'aspire à occuper un rôle de leadership et à impulser des innovations majeures dans mon domaine."
+    text: "À travers ces différents projets académiques et pratiques, j'ai pu développer une solide base de compétences techniques et méthodologiques, allant de l'analyse de systèmes électrotechniques simples à la conception mécanique et à l'automatisation industrielle.\n\nChaque expérience m'a permis de renforcer mon esprit d'analyse, ma rigueur et ma capacité à travailler en équipe, tout en cultivant une sensibilité aux enjeux de sécurité, de qualité et de développement durable.\n\nJe souhaite désormais mettre ces compétences au service de nouveaux projets, en contribuant à des solutions innovantes et durables, et en poursuivant mon développement professionnel dans un environnement stimulant."
   },
   contact: {
-    email: "votre.email@exemple.com",
-    phone: "+00 00 00 00 00",
+    email: "edboysedouardo@gmail.com",
+    phone: "+228 98 25 50 11",
     address: "Lomé, Togo",
-    instagram: "https://instagram.com/",
-    linkedin: "https://linkedin.com/in/"
+    instagram: "",
+    linkedin: ""
   }
 };
 

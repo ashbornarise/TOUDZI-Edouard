@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin — ATTOH-MENSAH Portfolio</title>
+  <title>Admin — TOUDJI Portfolio GMP</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
@@ -13,8 +13,8 @@
 <!-- ── LOGIN PAGE ── -->
 <div class="login-page" id="login-page">
   <div class="login-box">
-    <div class="login-logo">ATTOH-MENSAH</div>
-    <div class="login-subtitle">Panneau d'administration</div>
+    <div class="login-logo">TOUDJI</div>
+    <div class="login-subtitle">Panneau d'administration — GMP</div>
     <form id="login-form">
       <div class="login-field">
         <label for="login-password">Mot de passe</label>
@@ -35,8 +35,8 @@
   <!-- SIDEBAR -->
   <aside class="admin-sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-logo">ATTOH-MENSAH</div>
-      <div class="sidebar-subtitle">Panneau Admin</div>
+      <div class="sidebar-logo">TOUDJI</div>
+      <div class="sidebar-subtitle">Panneau Admin — GMP</div>
     </div>
 
     <nav class="sidebar-nav">
@@ -126,19 +126,19 @@
       <div class="form-grid">
         <div class="admin-field">
           <label>Sous-titre (ex : Portfolio Professionnel)</label>
-          <input id="hero-subtitle" placeholder="Portfolio Professionnel">
+          <input id="hero-subtitle" placeholder="GMP — ESIG Global Success">
         </div>
         <div class="admin-field">
           <label>Nom de famille</label>
-          <input id="hero-name" placeholder="ATTOH-MENSAH">
+          <input id="hero-name" placeholder="TOUDJI">
         </div>
         <div class="admin-field">
           <label>Prénom(s)</label>
-          <input id="hero-firstname" placeholder="Yao Pédro-Ebenezer">
+          <input id="hero-firstname" placeholder="KOKOUVI ÉDOUARD">
         </div>
         <div class="admin-field">
           <label>Titre / Profession</label>
-          <input id="hero-title" placeholder="Ingénieur | Innovateur">
+          <input id="hero-title" placeholder="Génie Mécanique & Productique">
         </div>
       </div>
 
@@ -377,11 +377,17 @@
       </div>
 
       <div class="info-box">
-        <strong>Comment ça fonctionne :</strong><br>
-        1. Créez un token GitHub (Settings → Developer settings → Personal access tokens → Tokens classic) avec la permission <strong>repo</strong><br>
-        2. Remplissez les champs ci-dessous et cliquez <strong>Enregistrer</strong><br>
-        3. Sauvegardez vos données (bouton vert en haut), puis cliquez <strong>Publier</strong><br>
-        4. Attendez ~2 minutes pour que GitHub Pages se mette à jour
+        <strong>Comment créer un token GitHub :</strong><br>
+        1. Allez sur <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong><br>
+        2. Cliquez <strong>Generate new token (classic)</strong>, cochez <strong>repo</strong> (accès complet), générez et copiez le token (<code>ghp_...</code>)<br>
+        3. Remplissez les champs ci-dessous et cliquez <strong>Enregistrer</strong><br>
+        4. Cliquez <strong>🔌 Tester la connexion</strong> pour vérifier que tout fonctionne<br>
+        5. Sauvegardez vos données (💾 en haut à droite), puis cliquez <strong>🚀 Publier</strong><br>
+        <br>
+        <strong>⚠️ Erreurs fréquentes :</strong><br>
+        • <strong>401</strong> → Token invalide ou expiré — recréez-en un<br>
+        • <strong>403</strong> → Le scope <strong>repo</strong> n'est pas coché sur le token<br>
+        • <strong>404</strong> → Nom d'utilisateur ou de dépôt incorrect
       </div>
 
       <div class="github-status">
@@ -396,7 +402,7 @@
         </div>
         <div class="admin-field">
           <label>Nom du dépôt</label>
-          <input id="gh-repo" placeholder="Portofolio-ATTOH-MENSAH">
+          <input id="gh-repo" placeholder="TOUDZI-Edouard">
         </div>
         <div class="admin-field">
           <label>Branche</label>
@@ -411,6 +417,7 @@
 
       <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
         <button class="admin-btn admin-btn-primary" id="gh-save">💾 Enregistrer les paramètres</button>
+        <button class="admin-btn admin-btn-outline" id="gh-test">🔌 Tester la connexion</button>
         <button class="admin-btn admin-btn-publish" id="gh-publish">🚀 Publier sur GitHub</button>
       </div>
 

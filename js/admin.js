@@ -793,6 +793,15 @@ function initGithubPanel() {
     updateGithubStatus();
   });
 
+  document.getElementById('gh-test')?.addEventListener('click', () => {
+    // Afficher le panel de log avant le test
+    const progress = document.querySelector('.publish-progress');
+    if (progress) progress.classList.add('visible');
+    const log = document.querySelector('.progress-log');
+    if (log) log.innerHTML = '';
+    testGithubConnection();
+  });
+
   document.getElementById('gh-publish')?.addEventListener('click', publishToGitHub);
   updateGithubStatus();
 }
@@ -832,6 +841,78 @@ function setProgress(pct) {
   if (bar) bar.style.width = pct + '%';
 }
 
+/* Encodage base64 fiable pour l'API GitHub (supporte é è ê ç etc.) */
+function toBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  const binary = Array.from(bytes, b => String.fromCharCode(b)).join('');
+  return btoa(binary);
+}
+
+/* Construit les headers GitHub — compatible tokens classic ET fine-grained */
+function githubHeaders(token) {
+  return {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+}
+
+/* Récupère le SHA d'un fichier existant (null si inexistant) */
+async function getFileSha(apiUrl, headers) {
+  try {
+    const r = await fetch(apiUrl, { headers });
+    if (r.status === 404) return null;
+    if (r.ok) {
+      const j = await r.json();
+      return j.sha || null;
+    }
+  } catch (_) {}
+  return null;
+}
+
+/* Décode un message d'erreur GitHub en texte lisible */
+async function githubErrorMsg(response) {
+  try {
+    const j = await response.json();
+    const detail = j.errors?.map(e => e.message).join(', ') || '';
+    return `HTTP ${response.status} — ${j.message || 'Erreur inconnue'}${detail ? ' (' + detail + ')' : ''}`;
+  } catch (_) {
+    return `HTTP ${response.status}`;
+  }
+}
+
+async function testGithubConnection() {
+  const cfg = loadGithubConfig();
+  if (!cfg.user || !cfg.repo || !cfg.token) {
+    toast('Remplissez et enregistrez d\'abord les paramètres', 'error');
+    return;
+  }
+  const btn = document.getElementById('gh-test');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Test…'; }
+  try {
+    const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}`;
+    const r = await fetch(url, { headers: githubHeaders(cfg.token) });
+    if (r.ok) {
+      const j = await r.json();
+      toast(`✓ Connexion OK — dépôt "${j.full_name}" trouvé`, 'success');
+      logProgress(`✓ Connexion réussie : ${j.full_name} (branche par défaut : ${j.default_branch})`, 'ok');
+    } else {
+      const msg = await githubErrorMsg(r);
+      toast(`Connexion échouée : ${msg}`, 'error');
+      logProgress(`✕ ${msg}`, 'err');
+      if (r.status === 401) logProgress('→ Votre token est invalide ou expiré.', 'err');
+      if (r.status === 403) logProgress('→ Le token n\'a pas les permissions nécessaires (scope "repo" manquant).', 'err');
+      if (r.status === 404) logProgress('→ Dépôt introuvable. Vérifiez le nom d\'utilisateur et du dépôt.', 'err');
+    }
+  } catch (e) {
+    toast('Erreur réseau : ' + e.message, 'error');
+    logProgress('✕ Erreur réseau — vérifiez votre connexion internet.', 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🔌 Tester la connexion'; }
+  }
+}
+
 async function publishToGitHub() {
   const cfg = loadGithubConfig();
   if (!cfg.user || !cfg.repo || !cfg.token) {
@@ -839,48 +920,54 @@ async function publishToGitHub() {
     switchPanel('github');
     return;
   }
+
   const progress = document.querySelector('.publish-progress');
   if (progress) progress.classList.add('visible');
   const log = document.querySelector('.progress-log');
   if (log) log.innerHTML = '';
   setProgress(0);
+
   const btn = document.getElementById('gh-publish');
   if (btn) btn.disabled = true;
 
+  const BASE = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents`;
+  const BRANCH = cfg.branch || 'main';
+  const HEADERS = githubHeaders(cfg.token);
+
   try {
     const data = loadData();
-    const BASE = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents`;
-    const HEADERS = {
-      'Authorization': `token ${cfg.token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/vnd.github.v3+json'
-    };
+    logProgress(`Début de la publication → ${cfg.user}/${cfg.repo} (${BRANCH})`);
+    setProgress(5);
 
-    // Extraire et uploader les images base64
+    // ── Uploader les images base64 ──
     logProgress('Analyse des images…');
-    setProgress(10);
     let imageCount = 0;
+
     async function uploadImage(dataUrl, filename) {
       const base64 = dataUrl.split(',')[1];
       if (!base64) return dataUrl;
-      const path = `uploads/${filename}`;
-      const apiPath = `${BASE}/${path}`;
-      let sha = null;
-      try {
-        const r = await fetch(apiPath, { headers: HEADERS });
-        if (r.ok) { const j = await r.json(); sha = j.sha; }
-      } catch (_) {}
-      const body = { message: `Upload image: ${filename}`, content: base64, branch: cfg.branch || 'main' };
+      const filePath = `uploads/${filename}`;
+      const apiUrl = `${BASE}/${filePath}`;
+      logProgress(`  Upload image : ${filename}…`);
+      const sha = await getFileSha(apiUrl, HEADERS);
+      const body = { message: `chore: upload ${filename}`, content: base64, branch: BRANCH };
       if (sha) body.sha = sha;
-      const r2 = await fetch(apiPath, { method: 'PUT', headers: HEADERS, body: JSON.stringify(body) });
-      if (!r2.ok) throw new Error(`Upload image ${filename} échoué (${r2.status})`);
-      logProgress(`✓ Image uploadée : ${filename}`, 'ok');
-      return path;
+      const r = await fetch(apiUrl, { method: 'PUT', headers: HEADERS, body: JSON.stringify(body) });
+      if (!r.ok) {
+        const msg = await githubErrorMsg(r);
+        throw new Error(`Image "${filename}" : ${msg}`);
+      }
+      logProgress(`  ✓ ${filename} uploadée`, 'ok');
+      return filePath;
     }
 
     async function processImages(obj) {
       if (typeof obj !== 'object' || !obj) return obj;
-      if (Array.isArray(obj)) return Promise.all(obj.map(processImages));
+      if (Array.isArray(obj)) {
+        const result = [];
+        for (const item of obj) result.push(await processImages(item));
+        return result;
+      }
       const result = {};
       for (const key of Object.keys(obj)) {
         const v = obj[key];
@@ -889,7 +976,7 @@ async function publishToGitHub() {
           const ext = v.match(/data:image\/(\w+)/)?.[1] || 'jpg';
           const fname = `img_${Date.now()}_${imageCount}.${ext}`;
           result[key] = await uploadImage(v, fname);
-        } else if (typeof v === 'object') {
+        } else if (typeof v === 'object' && v !== null) {
           result[key] = await processImages(v);
         } else {
           result[key] = v;
@@ -899,36 +986,53 @@ async function publishToGitHub() {
     }
 
     const processedData = await processImages(JSON.parse(JSON.stringify(data)));
+    const imgMsg = imageCount > 0 ? `${imageCount} image(s) uploadée(s).` : 'Aucune image locale détectée.';
+    logProgress(imgMsg, imageCount > 0 ? 'ok' : '');
     setProgress(60);
-    logProgress('Images traitées. Upload de portfolio-data.json…');
 
-    // Upload portfolio-data.json
-    const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(processedData, null, 2))));
-    let jsonSha = null;
-    try {
-      const r = await fetch(`${BASE}/portfolio-data.json`, { headers: HEADERS });
-      if (r.ok) { const j = await r.json(); jsonSha = j.sha; }
-    } catch (_) {}
+    // ── Uploader portfolio-data.json ──
+    logProgress('Upload de portfolio-data.json…');
+    const jsonStr = JSON.stringify(processedData, null, 2);
+    const jsonContent = toBase64(jsonStr);
+    const jsonApiUrl = `${BASE}/portfolio-data.json`;
+    const jsonSha = await getFileSha(jsonApiUrl, HEADERS);
+
     const jsonBody = {
-      message: 'Update portfolio-data.json via admin panel',
+      message: 'feat: update portfolio-data.json via admin panel',
       content: jsonContent,
-      branch: cfg.branch || 'main'
+      branch: BRANCH
     };
-    if (jsonSha) jsonBody.sha = jsonSha;
-    const jsonRes = await fetch(`${BASE}/portfolio-data.json`, {
-      method: 'PUT', headers: HEADERS, body: JSON.stringify(jsonBody)
-    });
-    if (!jsonRes.ok) {
-      const err = await jsonRes.json();
-      throw new Error(err.message || `Erreur ${jsonRes.status}`);
+    if (jsonSha) {
+      jsonBody.sha = jsonSha;
+      logProgress('  (fichier existant — mise à jour)');
+    } else {
+      logProgress('  (nouveau fichier — création)');
     }
+
+    setProgress(80);
+    const jsonRes = await fetch(jsonApiUrl, {
+      method: 'PUT',
+      headers: HEADERS,
+      body: JSON.stringify(jsonBody)
+    });
+
+    if (!jsonRes.ok) {
+      const msg = await githubErrorMsg(jsonRes);
+      if (jsonRes.status === 401) throw new Error(`401 — Token invalide ou expiré. Recréez un token avec le scope "repo".`);
+      if (jsonRes.status === 403) throw new Error(`403 — Permissions insuffisantes. Assurez-vous que le token a le scope "repo".`);
+      if (jsonRes.status === 404) throw new Error(`404 — Dépôt introuvable. Vérifiez le nom d'utilisateur ("${cfg.user}") et du dépôt ("${cfg.repo}").`);
+      if (jsonRes.status === 422) throw new Error(`422 — SHA incorrect. Réessayez (conflit de version).`);
+      throw new Error(msg);
+    }
+
     setProgress(100);
     logProgress('✓ portfolio-data.json publié avec succès !', 'ok');
-    logProgress('GitHub Pages se met à jour (~2 minutes)…');
-    toast('Publication réussie ! Site mis à jour dans ~2 minutes.', 'success');
+    logProgress('⏳ GitHub Pages se met à jour… patientez ~2 minutes puis faites Ctrl+Shift+R sur votre site.');
+    toast('Publication réussie ! Le site sera à jour dans ~2 minutes.', 'success');
+
   } catch (err) {
-    logProgress('✕ Erreur : ' + err.message, 'err');
-    toast('Erreur de publication : ' + err.message, 'error');
+    logProgress('✕ ' + err.message, 'err');
+    toast('Erreur : ' + err.message, 'error');
   } finally {
     if (btn) btn.disabled = false;
   }
@@ -996,19 +1100,45 @@ function initPasswordChange() {
 /* ── DEFAULT DATA (copy from main.js for admin init) ── */
 function getDefaultData() {
   return {
-    hero: { subtitle: 'Portfolio Professionnel', name: 'ATTOH-MENSAH', firstname: 'Yao Pédro-Ebenezer', title: 'Ingénieur | Innovateur', description: 'Passionné par les solutions techniques innovantes.', cvLink: '', photo: '', stats: [{num:'5+',label:'Projets'},{num:'3+',label:'Ans études'},{num:'∞',label:'Motivation'}] },
-    introduction: { title: 'Qui suis-je ?', text: '', image: '' },
-    about: { text: '', image: '', qualities: [], values: [] },
-    education: [],
-    skills: [],
-    experience: [],
-    projects: [],
-    testimonials: [],
-    blog: [],
-    roadmap: [],
-    inspirations: [],
-    objective: { title: 'Mon Objectif', text: '' },
-    contact: { email: '', phone: '', address: '', instagram: '', linkedin: '' }
+    hero: { subtitle: 'GMP — ESIG Global Success', name: 'TOUDJI', firstname: 'KOKOUVI ÉDOUARD', title: 'Génie Mécanique & Productique', description: 'Étudiant en GMP, passionné par la conception mécanique, l\'automatisation industrielle et les solutions techniques innovantes. Disponible pour stages et opportunités.', cvLink: 'Media/cv.pdf', photo: '', stats: [{num:'4',label:'SAE réalisées'},{num:'2+',label:'Ans d\'études'},{num:'∞',label:'Motivation'}] },
+    introduction: { title: 'Qui suis-je ?', text: 'Je suis TOUDJI Kokouvi Édouard, étudiant en BUT Génie Mécanique & Productique à l\'ESIG Global Success de Lomé, au Togo.\n\nPassionné par la mécanique, l\'automatisme et l\'électrotechnique, je suis disponible pour des stages et toute opportunité professionnelle enrichissante.', image: '' },
+    about: { text: 'Étudiant en Génie Mécanique & Productique, je combine rigueur technique et créativité pour concevoir des solutions adaptées aux enjeux industriels actuels.\n\nMon parcours à l\'ESIG Global Success m\'a permis de développer des compétences solides en conception mécanique, fabrication, automatisme et électrotechnique.', image: '', qualities: ['Rigoureux', 'Créatif', 'Curieux', 'Autonome', 'Esprit d\'équipe'], values: ['Excellence', 'Sécurité', 'Innovation', 'Qualité', 'Développement durable'] },
+    education: [
+      { school: 'ESIG Global Success — Lomé, Togo', degree: 'BUT Génie Mécanique & Productique', year: '2023 — En cours', description: 'Formation en conception mécanique, fabrication, automatisme et électrotechnique. Réalisation de projets concrets (SAE).' },
+      { school: 'Lycée — Lomé, Togo', degree: 'Baccalauréat Série C', year: '2022', description: 'Baccalauréat scientifique avec spécialisation mathématiques et sciences physiques.' }
+    ],
+    skills: [
+      { category: 'Conception & CAO', icon: '⚙️', description: '', tags: ['SolidWorks', 'CATIA', 'AutoCAD', 'Modélisation 3D', 'Mise en plan'] },
+      { category: 'Fabrication & Usinage', icon: '🔧', description: '', tags: ['Tournage', 'Fraisage', 'Tolérancement', 'Contrôle qualité', 'Ébavurage'] },
+      { category: 'Électrotechnique', icon: '⚡', description: '', tags: ['Moteurs asynchrones', 'Schémas électriques', 'Appareillage', 'Câblage'] },
+      { category: 'Automatisme', icon: '🤖', description: '', tags: ['Grafcet', 'Logique combinatoire', 'Systèmes séquentiels'] },
+      { category: 'Analyse & Méthode', icon: '📐', description: '', tags: ['FAST', 'SADT', 'AMDEC', 'Rapport technique'] },
+      { category: 'Transversales', icon: '👥', description: '', tags: ['Travail en équipe', 'Gestion de projet', 'Communication', 'Rigueur'] }
+    ],
+    experience: [
+      { role: 'Table ergonomique motorisée', company: 'Semaine de professionnalisation — ESIG', period: '2024', type: 'Projet pratique', description: 'Réalisation complète d\'une table ergonomique, pliable et motorisée. Conception sous SolidWorks, finition et gestion de projet en équipe.', tags: ['SolidWorks', 'Conception mécanique', 'Travail en équipe', 'Traitement de surface'] }
+    ],
+    projects: [
+      { name: 'SAE 1 — Analyse d\'un système électrotechnique simple', category: 'Électrotechnique', description: 'Analyse complète d\'un système électrotechnique monophasé : structure, fonctionnement et performances.', image: '', tags: ['Électrotechnique', 'Mesures', 'Analyse', 'Rapport technique'] },
+      { name: 'SAE 2 — Conception d\'un automatisme séquentiel', category: 'Automatisme', description: 'Conception et validation d\'un automatisme séquentiel à partir d\'un cahier des charges.', image: '', tags: ['Grafcet', 'Automatisme', 'Logique séquentielle'] },
+      { name: 'SAE 3 — Conception mécanique d\'un sous-ensemble', category: 'Conception', description: 'Conception et modélisation 3D d\'un sous-ensemble mécanique avec mise en plan détaillée.', image: '', tags: ['SolidWorks', 'Cotation', 'Tolérancement', 'Mise en plan'] },
+      { name: 'SAE 4 — Amélioration éclairage et ventilation en atelier', category: 'Ergonomie', description: 'Solutions techniques pour optimiser les conditions de travail : systèmes LED, ventilation et conformité aux normes.', image: '', tags: ['Analyse ergonomique', 'Systèmes LED', 'Ventilation', 'Normes'] }
+    ],
+    testimonials: [{ author: 'Encadrant ESIG', role: 'Professeur, ESIG Global Success', text: 'Édouard fait preuve d\'une rigueur et d\'un sérieux remarquables dans tous ses projets.', rating: 5, initials: 'EE' }],
+    blog: [{ title: 'Retour sur la SAE 4 : optimiser l\'éclairage et la ventilation en atelier', date: '2025-12-01', tag: 'GMP', summary: 'À travers ce projet, j\'ai découvert comment l\'ingénierie peut améliorer les conditions de travail.', link: '#' }],
+    roadmap: [
+      { icon: '🎓', date: '2022', title: 'Baccalauréat Série C', description: 'Obtention du baccalauréat scientifique à Lomé, Togo.', done: true },
+      { icon: '📚', date: '2023', title: 'Entrée en BUT GMP — ESIG Global Success', description: 'Intégration de la formation Génie Mécanique & Productique.', done: true },
+      { icon: '🔧', date: '2024', title: 'Semaine de professionnalisation', description: 'Réalisation d\'une table ergonomique motorisée en équipe.', done: true },
+      { icon: '🚀', date: '2025', title: 'Stage professionnel', description: 'Mise en pratique des compétences acquises en GMP en entreprise.', done: false },
+      { icon: '🎯', date: '2026', title: 'Obtention du BUT & insertion professionnelle', description: 'Validation du diplôme et intégration dans l\'industrie.', done: false }
+    ],
+    inspirations: [
+      { name: 'Nikola Tesla', role: 'Ingénieur & Inventeur', description: 'Son génie en électrotechnique et sa capacité à transformer des concepts abstraits en innovations concrètes m\'inspirent profondément.' },
+      { name: 'Elon Musk', role: 'Entrepreneur & Ingénieur', description: 'Sa vision industrielle audacieuse — de SpaceX à Tesla — démontre que l\'ingénierie peut repousser toutes les limites.' }
+    ],
+    objective: { title: 'Mon Objectif Professionnel', text: 'Je souhaite mettre mes compétences en GMP au service de projets innovants et durables, en contribuant à des solutions techniques rigoureuses qui ont un impact réel sur l\'industrie et la société.\n\nJe cherche à intégrer un environnement stimulant où je pourrai continuer à apprendre, à progresser et à relever des défis techniques ambitieux.' },
+    contact: { email: 'edboysedouardo@gmail.com', phone: '+228 98 25 50 11', address: 'Lomé, Togo', instagram: '', linkedin: '' }
   };
 }
 
