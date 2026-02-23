@@ -794,12 +794,19 @@ function initGithubPanel() {
   });
 
   document.getElementById('gh-test')?.addEventListener('click', () => {
-    // Afficher le panel de log avant le test
     const progress = document.querySelector('.publish-progress');
     if (progress) progress.classList.add('visible');
     const log = document.querySelector('.progress-log');
     if (log) log.innerHTML = '';
     testGithubConnection();
+  });
+
+  document.getElementById('gh-deploy')?.addEventListener('click', () => {
+    const progress = document.querySelector('.publish-progress');
+    if (progress) progress.classList.add('visible');
+    const log = document.querySelector('.progress-log');
+    if (log) log.innerHTML = '';
+    deployFullSite();
   });
 
   document.getElementById('gh-publish')?.addEventListener('click', publishToGitHub);
@@ -841,6 +848,13 @@ function setProgress(pct) {
   if (bar) bar.style.width = pct + '%';
 }
 
+/* Fichiers du site à déployer sur GitHub (déploiement complet) */
+const SITE_FILES = [
+  'index.html', 'admin.html', 'favicon.svg',
+  'css/style.css', 'css/admin.css',
+  'js/main.js', 'js/admin.js'
+];
+
 /* Encodage base64 fiable pour l'API GitHub (supporte é è ê ç etc.) */
 function toBase64(str) {
   const bytes = new TextEncoder().encode(str);
@@ -880,6 +894,78 @@ async function githubErrorMsg(response) {
   } catch (_) {
     return `HTTP ${response.status}`;
   }
+}
+
+/* Récupère un fichier texte local par fetch et l'uploade sur GitHub */
+async function uploadTextFileToGitHub(localPath, BASE, BRANCH, HEADERS) {
+  let text;
+  try {
+    const res = await fetch('./' + localPath + '?_t=' + Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    text = await res.text();
+  } catch (e) {
+    throw new Error(`Impossible de lire "${localPath}". Ouvrez l'admin via Live Server (VSCode) et non en file://. Détail: ${e.message}`);
+  }
+  const content = toBase64(text);
+  const apiUrl = `${BASE}/${localPath}`;
+  const sha = await getFileSha(apiUrl, HEADERS);
+  const body = { message: `deploy: update ${localPath}`, content, branch: BRANCH };
+  if (sha) body.sha = sha;
+  const r = await fetch(apiUrl, { method: 'PUT', headers: HEADERS, body: JSON.stringify(body) });
+  if (!r.ok) {
+    const msg = await githubErrorMsg(r);
+    throw new Error(`"${localPath}" : ${msg}`);
+  }
+}
+
+/* Extrait les images base64 des données, les uploade dans uploads/ et retourne les données modifiées */
+async function uploadImagesInData(data, BASE, BRANCH, HEADERS, onLog) {
+  let count = 0;
+  const log = (msg, type) => { if (onLog) onLog(msg, type || ''); };
+
+  async function uploadImg(dataUrl, filename) {
+    const base64 = dataUrl.split(',')[1];
+    if (!base64) return dataUrl;
+    const filePath = `uploads/${filename}`;
+    const apiUrl = `${BASE}/${filePath}`;
+    log(`  → Image : ${filename}…`);
+    const sha = await getFileSha(apiUrl, HEADERS);
+    const body = { message: `chore: upload ${filename}`, content: base64, branch: BRANCH };
+    if (sha) body.sha = sha;
+    const r = await fetch(apiUrl, { method: 'PUT', headers: HEADERS, body: JSON.stringify(body) });
+    if (!r.ok) {
+      const msg = await githubErrorMsg(r);
+      throw new Error(`Image "${filename}" : ${msg}`);
+    }
+    log(`  ✓ ${filename}`, 'ok');
+    return filePath;
+  }
+
+  async function walk(obj) {
+    if (typeof obj !== 'object' || !obj) return obj;
+    if (Array.isArray(obj)) {
+      const result = [];
+      for (const item of obj) result.push(await walk(item));
+      return result;
+    }
+    const result = {};
+    for (const key of Object.keys(obj)) {
+      const v = obj[key];
+      if (typeof v === 'string' && v.startsWith('data:image/')) {
+        count++;
+        const ext = v.match(/data:image\/(\w+)/)?.[1] || 'jpg';
+        result[key] = await uploadImg(v, `img_${Date.now()}_${count}.${ext}`);
+      } else if (typeof v === 'object' && v !== null) {
+        result[key] = await walk(v);
+      } else {
+        result[key] = v;
+      }
+    }
+    return result;
+  }
+
+  const processed = await walk(JSON.parse(JSON.stringify(data)));
+  return { processed, count };
 }
 
 async function testGithubConnection() {
@@ -936,67 +1022,22 @@ async function publishToGitHub() {
 
   try {
     const data = loadData();
-    logProgress(`Début de la publication → ${cfg.user}/${cfg.repo} (${BRANCH})`);
+    logProgress(`Publication → ${cfg.user}/${cfg.repo} (${BRANCH})`);
     setProgress(5);
 
     // ── Uploader les images base64 ──
-    logProgress('Analyse des images…');
-    let imageCount = 0;
-
-    async function uploadImage(dataUrl, filename) {
-      const base64 = dataUrl.split(',')[1];
-      if (!base64) return dataUrl;
-      const filePath = `uploads/${filename}`;
-      const apiUrl = `${BASE}/${filePath}`;
-      logProgress(`  Upload image : ${filename}…`);
-      const sha = await getFileSha(apiUrl, HEADERS);
-      const body = { message: `chore: upload ${filename}`, content: base64, branch: BRANCH };
-      if (sha) body.sha = sha;
-      const r = await fetch(apiUrl, { method: 'PUT', headers: HEADERS, body: JSON.stringify(body) });
-      if (!r.ok) {
-        const msg = await githubErrorMsg(r);
-        throw new Error(`Image "${filename}" : ${msg}`);
-      }
-      logProgress(`  ✓ ${filename} uploadée`, 'ok');
-      return filePath;
-    }
-
-    async function processImages(obj) {
-      if (typeof obj !== 'object' || !obj) return obj;
-      if (Array.isArray(obj)) {
-        const result = [];
-        for (const item of obj) result.push(await processImages(item));
-        return result;
-      }
-      const result = {};
-      for (const key of Object.keys(obj)) {
-        const v = obj[key];
-        if (typeof v === 'string' && v.startsWith('data:image/')) {
-          imageCount++;
-          const ext = v.match(/data:image\/(\w+)/)?.[1] || 'jpg';
-          const fname = `img_${Date.now()}_${imageCount}.${ext}`;
-          result[key] = await uploadImage(v, fname);
-        } else if (typeof v === 'object' && v !== null) {
-          result[key] = await processImages(v);
-        } else {
-          result[key] = v;
-        }
-      }
-      return result;
-    }
-
-    const processedData = await processImages(JSON.parse(JSON.stringify(data)));
-    const imgMsg = imageCount > 0 ? `${imageCount} image(s) uploadée(s).` : 'Aucune image locale détectée.';
-    logProgress(imgMsg, imageCount > 0 ? 'ok' : '');
+    logProgress('Analyse et upload des images…');
+    const { processed: processedData, count: imageCount } = await uploadImagesInData(
+      data, BASE, BRANCH, HEADERS, logProgress
+    );
+    logProgress(imageCount > 0 ? `✓ ${imageCount} image(s) uploadée(s).` : 'Aucune image locale.', imageCount > 0 ? 'ok' : '');
     setProgress(60);
 
     // ── Uploader portfolio-data.json ──
     logProgress('Upload de portfolio-data.json…');
-    const jsonStr = JSON.stringify(processedData, null, 2);
-    const jsonContent = toBase64(jsonStr);
+    const jsonContent = toBase64(JSON.stringify(processedData, null, 2));
     const jsonApiUrl = `${BASE}/portfolio-data.json`;
     const jsonSha = await getFileSha(jsonApiUrl, HEADERS);
-
     const jsonBody = {
       message: 'feat: update portfolio-data.json via admin panel',
       content: jsonContent,
@@ -1008,26 +1049,20 @@ async function publishToGitHub() {
     } else {
       logProgress('  (nouveau fichier — création)');
     }
-
     setProgress(80);
-    const jsonRes = await fetch(jsonApiUrl, {
-      method: 'PUT',
-      headers: HEADERS,
-      body: JSON.stringify(jsonBody)
-    });
-
+    const jsonRes = await fetch(jsonApiUrl, { method: 'PUT', headers: HEADERS, body: JSON.stringify(jsonBody) });
     if (!jsonRes.ok) {
       const msg = await githubErrorMsg(jsonRes);
       if (jsonRes.status === 401) throw new Error(`401 — Token invalide ou expiré. Recréez un token avec le scope "repo".`);
-      if (jsonRes.status === 403) throw new Error(`403 — Permissions insuffisantes. Assurez-vous que le token a le scope "repo".`);
-      if (jsonRes.status === 404) throw new Error(`404 — Dépôt introuvable. Vérifiez le nom d'utilisateur ("${cfg.user}") et du dépôt ("${cfg.repo}").`);
-      if (jsonRes.status === 422) throw new Error(`422 — SHA incorrect. Réessayez (conflit de version).`);
+      if (jsonRes.status === 403) throw new Error(`403 — Permissions insuffisantes. Le token doit avoir le scope "repo".`);
+      if (jsonRes.status === 404) throw new Error(`404 — Dépôt introuvable. Vérifiez "${cfg.user}/${cfg.repo}".`);
+      if (jsonRes.status === 422) throw new Error(`422 — Conflit SHA. Réessayez.`);
       throw new Error(msg);
     }
 
     setProgress(100);
     logProgress('✓ portfolio-data.json publié avec succès !', 'ok');
-    logProgress('⏳ GitHub Pages se met à jour… patientez ~2 minutes puis faites Ctrl+Shift+R sur votre site.');
+    logProgress('⏳ GitHub Pages se met à jour dans ~2 minutes. Faites Ctrl+Shift+R sur votre site.');
     toast('Publication réussie ! Le site sera à jour dans ~2 minutes.', 'success');
 
   } catch (err) {
@@ -1035,6 +1070,99 @@ async function publishToGitHub() {
     toast('Erreur : ' + err.message, 'error');
   } finally {
     if (btn) btn.disabled = false;
+  }
+}
+
+async function deployFullSite() {
+  if (window.location.protocol === 'file:') {
+    const progress = document.querySelector('.publish-progress');
+    if (progress) progress.classList.add('visible');
+    const log = document.querySelector('.progress-log');
+    if (log) log.innerHTML = '';
+    logProgress('✕ Protocole file:// détecté — impossible de lire les fichiers locaux.', 'err');
+    logProgress('→ Solution : ouvrez l\'admin via un serveur HTTP local :', 'err');
+    logProgress('   • VSCode : clic droit sur admin.html → "Open with Live Server"', 'err');
+    logProgress('   • Ou terminal : npx serve .', 'err');
+    toast('Ouvrez l\'admin via Live Server (pas en file://)', 'error');
+    return;
+  }
+
+  const cfg = loadGithubConfig();
+  if (!cfg.user || !cfg.repo || !cfg.token) {
+    toast('Configurez et enregistrez vos paramètres GitHub d\'abord', 'error');
+    return;
+  }
+
+  const progress = document.querySelector('.publish-progress');
+  if (progress) progress.classList.add('visible');
+  const log = document.querySelector('.progress-log');
+  if (log) log.innerHTML = '';
+  setProgress(0);
+
+  const btnDeploy = document.getElementById('gh-deploy');
+  const btnPublish = document.getElementById('gh-publish');
+  if (btnDeploy) btnDeploy.disabled = true;
+  if (btnPublish) btnPublish.disabled = true;
+
+  const BASE = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents`;
+  const BRANCH = cfg.branch || 'main';
+  const HEADERS = githubHeaders(cfg.token);
+
+  try {
+    logProgress(`🚀 Déploiement complet → ${cfg.user}/${cfg.repo} (${BRANCH})`);
+    setProgress(3);
+
+    // Étape 1 : fichiers du site
+    logProgress('');
+    logProgress('Étape 1/3 — Fichiers du site…');
+    for (let i = 0; i < SITE_FILES.length; i++) {
+      const f = SITE_FILES[i];
+      logProgress(`  → ${f}…`);
+      await uploadTextFileToGitHub(f, BASE, BRANCH, HEADERS);
+      logProgress(`  ✓ ${f}`, 'ok');
+      setProgress(3 + Math.round(((i + 1) / SITE_FILES.length) * 45));
+    }
+    logProgress(`✓ ${SITE_FILES.length} fichiers uploadés.`, 'ok');
+
+    // Étape 2 : images
+    logProgress('');
+    logProgress('Étape 2/3 — Images…');
+    setProgress(50);
+    const data = loadData();
+    const { processed: processedData, count: imgCount } = await uploadImagesInData(
+      data, BASE, BRANCH, HEADERS, logProgress
+    );
+    logProgress(imgCount > 0 ? `✓ ${imgCount} image(s) uploadée(s).` : 'Aucune image locale.', imgCount > 0 ? 'ok' : '');
+
+    // Étape 3 : portfolio-data.json
+    logProgress('');
+    logProgress('Étape 3/3 — portfolio-data.json…');
+    setProgress(75);
+    const jsonContent = toBase64(JSON.stringify(processedData, null, 2));
+    const jsonApiUrl = `${BASE}/portfolio-data.json`;
+    const jsonSha = await getFileSha(jsonApiUrl, HEADERS);
+    const jsonBody = { message: 'deploy: portfolio-data.json', content: jsonContent, branch: BRANCH };
+    if (jsonSha) jsonBody.sha = jsonSha;
+    const jsonRes = await fetch(jsonApiUrl, { method: 'PUT', headers: HEADERS, body: JSON.stringify(jsonBody) });
+    if (!jsonRes.ok) {
+      const msg = await githubErrorMsg(jsonRes);
+      throw new Error(msg);
+    }
+    logProgress('✓ portfolio-data.json uploadé.', 'ok');
+
+    setProgress(100);
+    logProgress('');
+    logProgress('✅ Déploiement complet réussi !', 'ok');
+    logProgress(`   Site : https://${cfg.user}.github.io/${cfg.repo}/`);
+    logProgress('   (GitHub Pages se met à jour dans ~2 minutes)');
+    toast('Déploiement complet réussi ! Visible dans ~2 min.', 'success');
+
+  } catch (err) {
+    logProgress('✕ ' + err.message, 'err');
+    toast('Erreur : ' + err.message, 'error');
+  } finally {
+    if (btnDeploy) btnDeploy.disabled = false;
+    if (btnPublish) btnPublish.disabled = false;
   }
 }
 

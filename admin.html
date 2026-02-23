@@ -377,17 +377,21 @@
       </div>
 
       <div class="info-box">
-        <strong>Comment créer un token GitHub :</strong><br>
-        1. Allez sur <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong><br>
-        2. Cliquez <strong>Generate new token (classic)</strong>, cochez <strong>repo</strong> (accès complet), générez et copiez le token (<code>ghp_...</code>)<br>
-        3. Remplissez les champs ci-dessous et cliquez <strong>Enregistrer</strong><br>
-        4. Cliquez <strong>🔌 Tester la connexion</strong> pour vérifier que tout fonctionne<br>
-        5. Sauvegardez vos données (💾 en haut à droite), puis cliquez <strong>🚀 Publier</strong><br>
+        <strong>🆕 Première utilisation — déployer le site :</strong><br>
+        1. Créez un token : <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong><br>
+        2. Cliquez <strong>Generate new token (classic)</strong>, cochez <strong>repo</strong> (accès complet), copiez le token (<code>ghp_...</code>)<br>
+        3. Remplissez les champs ci-dessous et cliquez <strong>💾 Enregistrer</strong><br>
+        4. Cliquez <strong>🔌 Tester la connexion</strong> pour vérifier<br>
+        5. Sauvegardez vos données (💾 en haut), puis cliquez <strong>🌐 Déploiement complet</strong><br>
+        <span style="color:var(--accent); opacity:0.8;">→ Publie TOUS les fichiers du site + vos données + vos images sur GitHub.</span><br>
+        <br>
+        <strong>🔄 Mises à jour du contenu :</strong> Sauvegardez (💾) puis cliquez <strong>🚀 Publier (données)</strong> — plus rapide, met à jour uniquement le contenu et les images.<br>
         <br>
         <strong>⚠️ Erreurs fréquentes :</strong><br>
         • <strong>401</strong> → Token invalide ou expiré — recréez-en un<br>
         • <strong>403</strong> → Le scope <strong>repo</strong> n'est pas coché sur le token<br>
-        • <strong>404</strong> → Nom d'utilisateur ou de dépôt incorrect
+        • <strong>404</strong> → Nom d'utilisateur ou de dépôt incorrect<br>
+        • <strong>file://</strong> → Pour le déploiement complet, ouvrez l'admin via <strong>Live Server</strong> dans VSCode (pas en double-clic)
       </div>
 
       <div class="github-status">
@@ -418,7 +422,8 @@
       <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
         <button class="admin-btn admin-btn-primary" id="gh-save">💾 Enregistrer les paramètres</button>
         <button class="admin-btn admin-btn-outline" id="gh-test">🔌 Tester la connexion</button>
-        <button class="admin-btn admin-btn-publish" id="gh-publish">🚀 Publier sur GitHub</button>
+        <button class="admin-btn admin-btn-deploy" id="gh-deploy">🌐 Déploiement complet</button>
+        <button class="admin-btn admin-btn-publish" id="gh-publish">🚀 Publier (données)</button>
       </div>
 
       <div class="publish-progress" id="publish-progress">
