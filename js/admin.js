@@ -54,6 +54,26 @@ function saveData(data) {
   localStorage.setItem(DATA_KEY, JSON.stringify(data));
 }
 
+/* Sauvegarde locale sans les base64 (évite le dépassement de quota ~5 MB) */
+function saveDataLocal(data) {
+  function stripBase64(obj) {
+    if (typeof obj !== 'object' || !obj) return obj;
+    if (Array.isArray(obj)) return obj.map(stripBase64);
+    const result = {};
+    for (const k of Object.keys(obj)) {
+      const v = obj[k];
+      result[k] = (typeof v === 'string' && v.startsWith('data:image/'))
+        ? '' : (typeof v === 'object' && v !== null ? stripBase64(v) : v);
+    }
+    return result;
+  }
+  try {
+    localStorage.setItem(DATA_KEY, JSON.stringify(stripBase64(data)));
+  } catch (e) {
+    console.warn('localStorage saveDataLocal:', e.message);
+  }
+}
+
 /* ── SECTION NAV ── */
 function switchPanel(name) {
   document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
@@ -1023,7 +1043,7 @@ async function publishToGitHub() {
   try {
     // Collecter l'état actuel du formulaire (inclut les images chargées en mémoire)
     const data = collectAllData();
-    saveData(data); // Auto-sauvegarder avant de publier
+    saveDataLocal(data); // Sauvegarder sans base64 (évite quota localStorage)
     logProgress(`Publication → ${cfg.user}/${cfg.repo} (${BRANCH})`);
     setProgress(5);
 
@@ -1063,6 +1083,7 @@ async function publishToGitHub() {
     }
 
     setProgress(100);
+    saveData(processedData); // Sauvegarder avec les chemins uploads/ (plus de base64)
     logProgress('✓ portfolio-data.json publié avec succès !', 'ok');
     logProgress('⏳ GitHub Pages se met à jour dans ~2 minutes. Faites Ctrl+Shift+R sur votre site.');
     toast('Publication réussie ! Le site sera à jour dans ~2 minutes.', 'success');
@@ -1132,7 +1153,7 @@ async function deployFullSite() {
     setProgress(50);
     // Collecter l'état actuel du formulaire (inclut les images chargées en mémoire)
     const data = collectAllData();
-    saveData(data); // Auto-sauvegarder avant de publier
+    saveDataLocal(data); // Sauvegarder sans base64 (évite quota localStorage)
     const { processed: processedData, count: imgCount } = await uploadImagesInData(
       data, BASE, BRANCH, HEADERS, logProgress
     );
@@ -1153,6 +1174,7 @@ async function deployFullSite() {
       throw new Error(msg);
     }
     logProgress('✓ portfolio-data.json uploadé.', 'ok');
+    saveData(processedData); // Sauvegarder avec les chemins uploads/ (plus de base64)
 
     setProgress(100);
     logProgress('');
@@ -1193,8 +1215,8 @@ function collectAllData() {
 function initSaveButton() {
   document.getElementById('btn-save')?.addEventListener('click', () => {
     const data = collectAllData();
-    saveData(data);
-    toast('Données sauvegardées en local', 'success');
+    saveDataLocal(data); // Sans base64 pour éviter le quota localStorage
+    toast('Données sauvegardées en local ✓', 'success');
   });
 }
 
