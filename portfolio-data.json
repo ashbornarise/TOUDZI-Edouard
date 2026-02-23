@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "subtitle": "Portfolio Professionnel",
+    "name": "TOUDJI",
+    "firstname": "Edouard",
+    "title": "Ingénieur | Innovateur",
+    "description": "Passionné par les solutions techniques innovantes.",
+    "cvLink": "",
+    "photo": "",
+    "stats": [
+      {
+        "num": "5+",
+        "label": "Projets"
+      },
+      {
+        "num": "3+",
+        "label": "Ans études"
+      },
+      {
+        "num": "∞",
+        "label": "Motivation"
+      }
+    ]
+  },
+  "introduction": {
+    "title": "Qui suis-je ?",
+    "text": "",
+    "image": ""
+  },
+  "about": {
+    "text": "",
+    "image": "",
+    "qualities": [],
+    "values": []
+  },
+  "education": [],
+  "skills": [],
+  "experience": [],
+  "projects": [],
+  "testimonials": [],
+  "blog": [],
+  "roadmap": [],
+  "inspirations": [],
+  "objective": {
+    "title": "Mon Objectif",
+    "text": ""
+  },
+  "contact": {
+    "email": "",
+    "phone": "",
+    "address": "",
+    "instagram": "",
+    "linkedin": ""
+  }
+}
