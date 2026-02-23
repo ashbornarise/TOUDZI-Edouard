@@ -148,7 +148,7 @@
       "name": "SAE 1 — Analyse d'un système électrotechnique simple",
       "category": "Électrotechnique",
       "description": "Analyse complète d'un système électrotechnique monophasé : structure, fonctionnement et performances.",
-      "image": "",
+      "image": "uploads/img_1771867416252_1.jpeg",
       "tags": [
         "Électrotechnique",
         "Mesures",
@@ -160,7 +160,7 @@
       "name": "SAE 2 — Conception d'un automatisme séquentiel",
       "category": "Automatisme",
       "description": "Conception et validation d'un automatisme séquentiel à partir d'un cahier des charges.",
-      "image": "",
+      "image": "uploads/img_1771867418516_2.jpeg",
       "tags": [
         "Grafcet",
         "Automatisme",
@@ -171,7 +171,7 @@
       "name": "SAE 3 — Conception mécanique d'un sous-ensemble",
       "category": "Conception",
       "description": "Conception et modélisation 3D d'un sous-ensemble mécanique avec mise en plan détaillée.",
-      "image": "",
+      "image": "uploads/img_1771867422104_3.jpeg",
       "tags": [
         "SolidWorks",
         "Cotation",
@@ -183,7 +183,7 @@
       "name": "SAE 4 — Amélioration éclairage et ventilation en atelier",
       "category": "Ergonomie",
       "description": "Solutions techniques pour optimiser les conditions de travail : systèmes LED, ventilation et conformité aux normes.",
-      "image": "",
+      "image": "uploads/img_1771867430120_4.jpeg",
       "tags": [
         "Analyse ergonomique",
         "Systèmes LED",
