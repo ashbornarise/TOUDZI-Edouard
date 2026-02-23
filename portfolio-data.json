@@ -196,9 +196,9 @@
     {
       "author": "Encadrant ESIG",
       "role": "Professeur, ESIG Global Success",
-      "initials": "EE",
       "text": "Édouard fait preuve d'une rigueur et d'un sérieux remarquables dans tous ses projets.",
-      "rating": 5
+      "rating": 5,
+      "initials": "EE"
     }
   ],
   "blog": [
@@ -206,8 +206,8 @@
       "title": "Retour sur la SAE 4 : optimiser l'éclairage et la ventilation en atelier",
       "date": "2025-12-01",
       "tag": "GMP",
-      "link": "#",
-      "summary": "À travers ce projet, j'ai découvert comment l'ingénierie peut améliorer les conditions de travail."
+      "summary": "À travers ce projet, j'ai découvert comment l'ingénierie peut améliorer les conditions de travail.",
+      "link": "#"
     }
   ],
   "roadmap": [
