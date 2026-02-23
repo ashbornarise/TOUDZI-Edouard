@@ -1,20 +1,20 @@
 {
   "hero": {
-    "subtitle": "GMP — ESIG Global Success",
+    "subtitle": "Portfolio Professionnel",
     "name": "TOUDJI",
-    "firstname": "KOKOUVI ÉDOUARD",
-    "title": "Génie Mécanique & Productique",
-    "description": "Étudiant en GMP, passionné par la conception mécanique, l'automatisation industrielle et les solutions techniques innovantes. Disponible pour stages et opportunités.",
-    "cvLink": "Media/cv.pdf",
-    "photo": "",
+    "firstname": "Edouard",
+    "title": "Ingénieur | Innovateur",
+    "description": "Passionné par les solutions techniques innovantes.",
+    "cvLink": "",
+    "photo": "uploads/img_1771834141188_1.jpeg",
     "stats": [
       {
-        "num": "4",
-        "label": "SAE réalisées"
+        "num": "5+",
+        "label": "Projets"
       },
       {
-        "num": "2+",
-        "label": "Ans d'études"
+        "num": "3+",
+        "label": "Ans études"
       },
       {
         "num": "∞",
@@ -24,249 +24,31 @@
   },
   "introduction": {
     "title": "Qui suis-je ?",
-    "text": "Je suis TOUDJI Kokouvi Édouard, étudiant en BUT Génie Mécanique & Productique à l'ESIG Global Success de Lomé, au Togo.\n\nPassionné par la mécanique, l'automatisme et l'électrotechnique, je suis disponible pour des stages et toute opportunité professionnelle enrichissante.",
+    "text": "",
     "image": ""
   },
   "about": {
-    "text": "Étudiant en Génie Mécanique & Productique, je combine rigueur technique et créativité pour concevoir des solutions adaptées aux enjeux industriels actuels.\n\nMon parcours à l'ESIG Global Success m'a permis de développer des compétences solides en conception mécanique, fabrication, automatisme et électrotechnique.",
+    "text": "",
     "image": "",
-    "qualities": [
-      "Rigoureux",
-      "Créatif",
-      "Curieux",
-      "Autonome",
-      "Esprit d'équipe"
-    ],
-    "values": [
-      "Excellence",
-      "Sécurité",
-      "Innovation",
-      "Qualité",
-      "Développement durable"
-    ]
+    "qualities": [],
+    "values": []
   },
-  "education": [
-    {
-      "school": "ESIG Global Success — Lomé, Togo",
-      "degree": "BUT Génie Mécanique & Productique",
-      "year": "2023 — En cours",
-      "description": "Formation en conception mécanique, fabrication, automatisme et électrotechnique. Réalisation de projets concrets (SAE)."
-    },
-    {
-      "school": "Lycée — Lomé, Togo",
-      "degree": "Baccalauréat Série C",
-      "year": "2022",
-      "description": "Baccalauréat scientifique avec spécialisation mathématiques et sciences physiques."
-    }
-  ],
-  "skills": [
-    {
-      "category": "Conception & CAO",
-      "icon": "⚙️",
-      "description": "",
-      "tags": [
-        "SolidWorks",
-        "CATIA",
-        "AutoCAD",
-        "Modélisation 3D",
-        "Mise en plan"
-      ]
-    },
-    {
-      "category": "Fabrication & Usinage",
-      "icon": "🔧",
-      "description": "",
-      "tags": [
-        "Tournage",
-        "Fraisage",
-        "Tolérancement",
-        "Contrôle qualité",
-        "Ébavurage"
-      ]
-    },
-    {
-      "category": "Électrotechnique",
-      "icon": "⚡",
-      "description": "",
-      "tags": [
-        "Moteurs asynchrones",
-        "Schémas électriques",
-        "Appareillage",
-        "Câblage"
-      ]
-    },
-    {
-      "category": "Automatisme",
-      "icon": "🤖",
-      "description": "",
-      "tags": [
-        "Grafcet",
-        "Logique combinatoire",
-        "Systèmes séquentiels"
-      ]
-    },
-    {
-      "category": "Analyse & Méthode",
-      "icon": "📐",
-      "description": "",
-      "tags": [
-        "FAST",
-        "SADT",
-        "AMDEC",
-        "Rapport technique"
-      ]
-    },
-    {
-      "category": "Transversales",
-      "icon": "👥",
-      "description": "",
-      "tags": [
-        "Travail en équipe",
-        "Gestion de projet",
-        "Communication",
-        "Rigueur"
-      ]
-    }
-  ],
-  "experience": [
-    {
-      "role": "Table ergonomique motorisée",
-      "company": "Semaine de professionnalisation — ESIG",
-      "period": "2024",
-      "type": "Projet pratique",
-      "description": "Réalisation complète d'une table ergonomique, pliable et motorisée. Conception sous SolidWorks, finition et gestion de projet en équipe.",
-      "tags": [
-        "SolidWorks",
-        "Conception mécanique",
-        "Travail en équipe",
-        "Traitement de surface"
-      ]
-    }
-  ],
-  "projects": [
-    {
-      "name": "SAE 1 — Analyse d'un système électrotechnique simple",
-      "category": "Électrotechnique",
-      "description": "Analyse complète d'un système électrotechnique monophasé : structure, fonctionnement et performances.",
-      "image": "",
-      "tags": [
-        "Électrotechnique",
-        "Mesures",
-        "Analyse",
-        "Rapport technique"
-      ]
-    },
-    {
-      "name": "SAE 2 — Conception d'un automatisme séquentiel",
-      "category": "Automatisme",
-      "description": "Conception et validation d'un automatisme séquentiel à partir d'un cahier des charges.",
-      "image": "",
-      "tags": [
-        "Grafcet",
-        "Automatisme",
-        "Logique séquentielle"
-      ]
-    },
-    {
-      "name": "SAE 3 — Conception mécanique d'un sous-ensemble",
-      "category": "Conception",
-      "description": "Conception et modélisation 3D d'un sous-ensemble mécanique avec mise en plan détaillée.",
-      "image": "",
-      "tags": [
-        "SolidWorks",
-        "Cotation",
-        "Tolérancement",
-        "Mise en plan"
-      ]
-    },
-    {
-      "name": "SAE 4 — Amélioration éclairage et ventilation en atelier",
-      "category": "Ergonomie",
-      "description": "Solutions techniques pour optimiser les conditions de travail : systèmes LED, ventilation et conformité aux normes.",
-      "image": "",
-      "tags": [
-        "Analyse ergonomique",
-        "Systèmes LED",
-        "Ventilation",
-        "Normes"
-      ]
-    }
-  ],
-  "testimonials": [
-    {
-      "author": "Encadrant ESIG",
-      "role": "Professeur, ESIG Global Success",
-      "text": "Édouard fait preuve d'une rigueur et d'un sérieux remarquables dans tous ses projets.",
-      "rating": 5,
-      "initials": "EE"
-    }
-  ],
-  "blog": [
-    {
-      "title": "Retour sur la SAE 4 : optimiser l'éclairage et la ventilation en atelier",
-      "date": "2025-12-01",
-      "tag": "GMP",
-      "summary": "À travers ce projet, j'ai découvert comment l'ingénierie peut améliorer les conditions de travail.",
-      "link": "#"
-    }
-  ],
-  "roadmap": [
-    {
-      "icon": "🎓",
-      "date": "2022",
-      "title": "Baccalauréat Série C",
-      "description": "Obtention du baccalauréat scientifique à Lomé, Togo.",
-      "done": true
-    },
-    {
-      "icon": "📚",
-      "date": "2023",
-      "title": "Entrée en BUT GMP — ESIG Global Success",
-      "description": "Intégration de la formation Génie Mécanique & Productique.",
-      "done": true
-    },
-    {
-      "icon": "🔧",
-      "date": "2024",
-      "title": "Semaine de professionnalisation",
-      "description": "Réalisation d'une table ergonomique motorisée en équipe.",
-      "done": true
-    },
-    {
-      "icon": "🚀",
-      "date": "2025",
-      "title": "Stage professionnel",
-      "description": "Mise en pratique des compétences acquises en GMP en entreprise.",
-      "done": false
-    },
-    {
-      "icon": "🎯",
-      "date": "2026",
-      "title": "Obtention du BUT & insertion professionnelle",
-      "description": "Validation du diplôme et intégration dans l'industrie.",
-      "done": false
-    }
-  ],
-  "inspirations": [
-    {
-      "name": "Nikola Tesla",
-      "role": "Ingénieur & Inventeur",
-      "description": "Son génie en électrotechnique et sa capacité à transformer des concepts abstraits en innovations concrètes m'inspirent profondément."
-    },
-    {
-      "name": "Elon Musk",
-      "role": "Entrepreneur & Ingénieur",
-      "description": "Sa vision industrielle audacieuse — de SpaceX à Tesla — démontre que l'ingénierie peut repousser toutes les limites."
-    }
-  ],
+  "education": [],
+  "skills": [],
+  "experience": [],
+  "projects": [],
+  "testimonials": [],
+  "blog": [],
+  "roadmap": [],
+  "inspirations": [],
   "objective": {
-    "title": "Mon Objectif Professionnel",
-    "text": "Je souhaite mettre mes compétences en GMP au service de projets innovants et durables, en contribuant à des solutions techniques rigoureuses qui ont un impact réel sur l'industrie et la société.\n\nJe cherche à intégrer un environnement stimulant où je pourrai continuer à apprendre, à progresser et à relever des défis techniques ambitieux."
+    "title": "Mon Objectif",
+    "text": ""
   },
   "contact": {
-    "email": "edboysedouardo@gmail.com",
-    "phone": "+228 98 25 50 11",
-    "address": "Lomé, Togo",
+    "email": "",
+    "phone": "",
+    "address": "",
     "instagram": "",
     "linkedin": ""
   }
