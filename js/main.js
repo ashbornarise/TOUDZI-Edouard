@@ -13,7 +13,7 @@ const DEFAULT_DATA = {
     title: "Génie Mécanique & Productique",
     description: "Étudiant en GMP, passionné par la conception mécanique, l'automatisation industrielle et les solutions techniques innovantes. Disponible pour stages et opportunités.",
     cvLink: "Media/cv.pdf",
-    photo: "",
+    photo: "Image/hero.jpg",
     stats: [
       { num: "4", label: "SAE réalisées" },
       { num: "2+", label: "Ans d'études" },
@@ -213,7 +213,7 @@ async function loadData() {
       const data = await res.json();
       return mergeDeep(DEFAULT_DATA, data);
     }
-  } catch (_) {}
+  } catch (_) { }
 
   // 2. localStorage (prévisualisation admin)
   try {
@@ -222,7 +222,7 @@ async function loadData() {
       const data = JSON.parse(stored);
       return mergeDeep(DEFAULT_DATA, data);
     }
-  } catch (_) {}
+  } catch (_) { }
 
   // 3. Données par défaut
   return DEFAULT_DATA;
@@ -248,7 +248,7 @@ function mergeDeep(target, source) {
 
 /* ── HELPERS HTML ── */
 function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function renderTags(tags) {
@@ -293,14 +293,14 @@ function renderHero(d) {
   const frame = document.querySelector('#hero .photo-frame-inner');
   if (frame) {
     if (hero.photo) {
-      frame.innerHTML = `<img src="${esc(imgSrc(hero.photo))}" alt="${esc(hero.firstname)} ${esc(hero.name)}">`;
+      frame.innerHTML = `<img src="${esc(imgSrc(hero.photo))}" alt="${esc(hero.firstname)} ${esc(hero.name)}" loading="eager">`;
     } else {
       frame.innerHTML = `<div class="photo-placeholder">
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
           <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
         </svg>
         <p>Votre photo</p>
-        <p>Media/photo.jpg</p>
+        <p>Image/hero.jpg</p>
       </div>`;
     }
   }
@@ -324,7 +324,7 @@ function renderIntroduction(d) {
   const imgWrap = document.querySelector('#introduction .intro-img-wrap');
   if (imgWrap) {
     if (intro.image) {
-      imgWrap.innerHTML = `<img src="${esc(imgSrc(intro.image))}" alt="Introduction">`;
+      imgWrap.innerHTML = `<img src="${esc(imgSrc(intro.image))}" alt="Introduction" loading="lazy">`;
     } else {
       imgWrap.innerHTML = `<div class="intro-img-placeholder">Photo d'introduction</div>`;
     }
@@ -338,7 +338,7 @@ function renderAbout(d) {
   const imgSide = document.querySelector('#about .about-img-side');
   if (imgSide) {
     if (about.image) {
-      imgSide.innerHTML = `<img src="${esc(imgSrc(about.image))}" alt="À propos">`;
+      imgSide.innerHTML = `<img src="${esc(imgSrc(about.image))}" alt="À propos" loading="lazy">`;
     } else {
       imgSide.innerHTML = `<div class="about-img-placeholder">Votre photo</div>`;
     }
@@ -426,13 +426,13 @@ function renderProjects(d) {
     <div class="proj-card reveal">
       <div class="proj-thumb">
         ${proj.image
-          ? `<img src="${esc(imgSrc(proj.image))}" alt="${esc(proj.name)}">`
-          : `<div class="proj-thumb-inner">
+      ? `<img src="${esc(imgSrc(proj.image))}" alt="${esc(proj.name)}">`
+      : `<div class="proj-thumb-inner">
               <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.7">
                 <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
               </svg>
             </div>`
-        }
+    }
         <div class="proj-num">${String(i + 1).padStart(2, '0')}</div>
         <span class="proj-tag-top">${esc(proj.category)}</span>
       </div>
@@ -463,7 +463,7 @@ function renderTestimonials(d) {
       <div class="testimonial-stars">${renderStars(t.rating)}</div>
       <div class="testimonial-text">"${esc(t.text)}"</div>
       <div class="testimonial-author">
-        <div class="testimonial-initials">${esc(t.initials || t.author.substring(0,2).toUpperCase())}</div>
+        <div class="testimonial-initials">${esc(t.initials || t.author.substring(0, 2).toUpperCase())}</div>
         <div>
           <div class="testimonial-name">${esc(t.author)}</div>
           <div class="testimonial-role">${esc(t.role)}</div>
@@ -490,9 +490,9 @@ function renderBlog(d) {
       <div class="blog-title">${esc(article.title)}</div>
       <div class="blog-summary">${esc(article.summary)}</div>
       ${article.link && article.link !== '#'
-        ? `<a href="${esc(article.link)}" class="blog-read-more" target="_blank">Lire la suite →</a>`
-        : '<span class="blog-read-more" style="opacity:0.4">À venir →</span>'
-      }
+      ? `<a href="${esc(article.link)}" class="blog-read-more" target="_blank">Lire la suite →</a>`
+      : '<span class="blog-read-more" style="opacity:0.4">À venir →</span>'
+    }
     </div>
   `).join('');
 }
@@ -603,37 +603,7 @@ function initReveal() {
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-/* ── CUSTOM CURSOR ── */
-function initCursor() {
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  if (!cursor || !ring) return;
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top  = my + 'px';
-  });
-  (function animateCursor() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(animateCursor);
-  })();
-  document.querySelectorAll('a, button, .btn, .proj-card, .skill-card, .exp-card, .contact-item').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '20px'; cursor.style.height = '20px';
-      ring.style.width = '60px'; ring.style.height = '60px';
-      ring.style.borderColor = 'rgba(57,211,83,0.7)';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '12px'; cursor.style.height = '12px';
-      ring.style.width = '40px'; ring.style.height = '40px';
-      ring.style.borderColor = 'rgba(57,211,83,0.4)';
-    });
-  });
-}
+/* cursor functionality removed */
 
 /* ── NAV ACTIVE ── */
 function initNavActive() {
@@ -666,8 +636,8 @@ function initContactForm() {
   const btn = document.querySelector('.form-btn');
   if (!btn) return;
   btn.addEventListener('click', () => {
-    const name    = document.getElementById('cf-name')?.value || '';
-    const email   = document.getElementById('cf-email')?.value || '';
+    const name = document.getElementById('cf-name')?.value || '';
+    const email = document.getElementById('cf-email')?.value || '';
     const subject = document.getElementById('cf-subject')?.value || '';
     const message = document.getElementById('cf-message')?.value || '';
     if (!name || !email || !message) {
@@ -699,7 +669,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderContact(data);
 
   initReveal();
-  initCursor();
   initNavActive();
   initMobileNav();
   initContactForm();
