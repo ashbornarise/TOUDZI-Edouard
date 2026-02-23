@@ -898,6 +898,7 @@ const SITE_FILES = [
   'index.html', 'admin.html', 'favicon.svg',
   'css/style.css', 'css/admin.css',
   'js/main.js', 'js/admin.js',
+  'Image/hero.jpg',
   'mes-projets/sae1.jpg', 'mes-projets/sae2.jpg',
   'mes-projets/sae3.jpg', 'mes-projets/sae4.jpg',
   'mes-projets/table.jpg'

@@ -1,0 +1,10 @@
+# Claude Code internal files
+.claude/
+
+# Fichiers originaux WhatsApp (remplacés par les copies renommées)
+mes-projets/WhatsApp*
+Image/WhatsApp*
+
+# OS
+.DS_Store
+Thumbs.db
