@@ -233,10 +233,13 @@ function mergeDeep(target, source) {
   const result = { ...target };
   for (const key of Object.keys(source)) {
     if (Array.isArray(source[key])) {
-      result[key] = source[key];
+      // Utiliser les données publiées uniquement si non vides,
+      // sinon garder les valeurs de DEFAULT_DATA
+      result[key] = source[key].length > 0 ? source[key] : (target[key] || []);
     } else if (typeof source[key] === 'object' && source[key] !== null) {
       result[key] = mergeDeep(target[key] || {}, source[key]);
-    } else {
+    } else if (source[key] !== '' && source[key] !== null && source[key] !== undefined) {
+      // Ne pas écraser les valeurs par défaut avec des chaînes vides
       result[key] = source[key];
     }
   }
