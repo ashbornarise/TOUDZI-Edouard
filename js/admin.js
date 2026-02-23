@@ -1021,7 +1021,9 @@ async function publishToGitHub() {
   const HEADERS = githubHeaders(cfg.token);
 
   try {
-    const data = loadData();
+    // Collecter l'état actuel du formulaire (inclut les images chargées en mémoire)
+    const data = collectAllData();
+    saveData(data); // Auto-sauvegarder avant de publier
     logProgress(`Publication → ${cfg.user}/${cfg.repo} (${BRANCH})`);
     setProgress(5);
 
@@ -1128,7 +1130,9 @@ async function deployFullSite() {
     logProgress('');
     logProgress('Étape 2/3 — Images…');
     setProgress(50);
-    const data = loadData();
+    // Collecter l'état actuel du formulaire (inclut les images chargées en mémoire)
+    const data = collectAllData();
+    saveData(data); // Auto-sauvegarder avant de publier
     const { processed: processedData, count: imgCount } = await uploadImagesInData(
       data, BASE, BRANCH, HEADERS, logProgress
     );
