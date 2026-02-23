@@ -54,23 +54,48 @@ function saveData(data) {
   localStorage.setItem(DATA_KEY, JSON.stringify(data));
 }
 
+/* Supprime les base64 d'un objet (retourne '' à la place) */
+function stripBase64(obj) {
+  if (typeof obj !== 'object' || !obj) return obj;
+  if (Array.isArray(obj)) return obj.map(stripBase64);
+  const result = {};
+  for (const k of Object.keys(obj)) {
+    const v = obj[k];
+    result[k] = (typeof v === 'string' && v.startsWith('data:image/'))
+      ? '' : (typeof v === 'object' && v !== null ? stripBase64(v) : v);
+  }
+  return result;
+}
+
 /* Sauvegarde locale sans les base64 (évite le dépassement de quota ~5 MB) */
 function saveDataLocal(data) {
-  function stripBase64(obj) {
-    if (typeof obj !== 'object' || !obj) return obj;
-    if (Array.isArray(obj)) return obj.map(stripBase64);
-    const result = {};
-    for (const k of Object.keys(obj)) {
-      const v = obj[k];
-      result[k] = (typeof v === 'string' && v.startsWith('data:image/'))
-        ? '' : (typeof v === 'object' && v !== null ? stripBase64(v) : v);
-    }
-    return result;
-  }
   try {
     localStorage.setItem(DATA_KEY, JSON.stringify(stripBase64(data)));
   } catch (e) {
-    console.warn('localStorage saveDataLocal:', e.message);
+    // Quota dépassé : vider l'ancienne entrée et réessayer
+    try {
+      localStorage.removeItem(DATA_KEY);
+      localStorage.setItem(DATA_KEY, JSON.stringify(stripBase64(data)));
+    } catch (e2) {
+      console.warn('localStorage saveDataLocal:', e2.message);
+    }
+  }
+}
+
+/* Nettoie les base64 éventuellement stockés dans le localStorage existant */
+function cleanStoredBase64() {
+  try {
+    const raw = localStorage.getItem(DATA_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    // Vérifier si des base64 sont présents
+    const str = raw;
+    if (str.includes('data:image/')) {
+      localStorage.setItem(DATA_KEY, JSON.stringify(stripBase64(data)));
+    }
+  } catch (e) {
+    // Si le localStorage est corrompu ou trop plein, on le vide
+    try { localStorage.removeItem(DATA_KEY); } catch (_) {}
   }
 }
 
@@ -872,7 +897,10 @@ function setProgress(pct) {
 const SITE_FILES = [
   'index.html', 'admin.html', 'favicon.svg',
   'css/style.css', 'css/admin.css',
-  'js/main.js', 'js/admin.js'
+  'js/main.js', 'js/admin.js',
+  'mes-projets/sae1.jpg', 'mes-projets/sae2.jpg',
+  'mes-projets/sae3.jpg', 'mes-projets/sae4.jpg',
+  'mes-projets/table.jpg'
 ];
 
 /* Encodage base64 fiable pour l'API GitHub (supporte é è ê ç etc.) */
@@ -916,17 +944,19 @@ async function githubErrorMsg(response) {
   }
 }
 
-/* Récupère un fichier texte local par fetch et l'uploade sur GitHub */
+/* Récupère un fichier local (texte ou binaire) par fetch et l'uploade sur GitHub */
 async function uploadTextFileToGitHub(localPath, BASE, BRANCH, HEADERS) {
-  let text;
+  let content;
   try {
     const res = await fetch('./' + localPath + '?_t=' + Date.now());
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    text = await res.text();
+    // arrayBuffer fonctionne pour texte ET binaires (images JPEG/PNG/etc.)
+    const buffer = await res.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    content = btoa(Array.from(bytes, b => String.fromCharCode(b)).join(''));
   } catch (e) {
     throw new Error(`Impossible de lire "${localPath}". Ouvrez l'admin via Live Server (VSCode) et non en file://. Détail: ${e.message}`);
   }
-  const content = toBase64(text);
   const apiUrl = `${BASE}/${localPath}`;
   const sha = await getFileSha(apiUrl, HEADERS);
   const body = { message: `deploy: update ${localPath}`, content, branch: BRANCH };
@@ -1324,6 +1354,7 @@ function initLogin() {
 
 /* ── INIT ADMIN APP ── */
 function initAdmin() {
+  cleanStoredBase64(); // Nettoyer les anciens base64 en localStorage (évite quota)
   const data = loadData();
 
   // Init all panels

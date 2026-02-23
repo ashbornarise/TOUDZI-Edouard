@@ -90,6 +90,7 @@ const DEFAULT_DATA = {
       period: "2024",
       type: "Projet pratique",
       description: "Réalisation complète d'une table ergonomique, pliable et motorisée dans le cadre de la semaine de professionnalisation. Conception mécanique (analyse du besoin, mécanismes de pliage, modélisation 3D sous SolidWorks), finition (ébavurage, ponçage, traitement de surface), et gestion de projet en équipe.",
+      image: "mes-projets/table.jpg",
       tags: ["SolidWorks", "Conception mécanique", "Travail en équipe", "Traitement de surface"]
     }
   ],
@@ -98,28 +99,28 @@ const DEFAULT_DATA = {
       name: "SAE 1 — Analyse d'un système électrotechnique simple",
       category: "Électrotechnique",
       description: "Analyse complète d'un système électrotechnique monophasé : étude de la structure, du fonctionnement et des performances. Réalisation de mesures et interprétation des résultats.",
-      image: "",
+      image: "mes-projets/sae1.jpg",
       tags: ["Électrotechnique", "Mesures", "Analyse", "Rapport technique"]
     },
     {
       name: "SAE 2 — Conception d'un automatisme séquentiel",
       category: "Automatisme",
       description: "Conception et validation d'un automatisme séquentiel à partir d'un cahier des charges. Modélisation Grafcet, analyse logique combinatoire et mise en œuvre simulée.",
-      image: "",
+      image: "mes-projets/sae2.jpg",
       tags: ["Grafcet", "Automatisme", "Logique séquentielle", "Cahier des charges"]
     },
     {
       name: "SAE 3 — Conception mécanique d'un sous-ensemble",
       category: "Conception",
       description: "Conception et modélisation 3D d'un sous-ensemble mécanique, avec mise en plan détaillée, spécification des tolérances et choix des matériaux adaptés.",
-      image: "",
+      image: "mes-projets/sae3.jpg",
       tags: ["SolidWorks", "Cotation", "Tolérancement", "Choix matériaux", "Mise en plan"]
     },
     {
       name: "SAE 4 — Amélioration de l'éclairage et de la ventilation en atelier",
       category: "Ergonomie",
       description: "Étude et mise en œuvre de solutions techniques pour optimiser les conditions de travail en atelier de génie mécanique : systèmes LED, ventilation et conformité aux normes.",
-      image: "",
+      image: "mes-projets/sae4.jpg",
       tags: ["Analyse ergonomique", "Systèmes LED", "Ventilation", "Normes & validation", "Organisation"]
     }
   ],
