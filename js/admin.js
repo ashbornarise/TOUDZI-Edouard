@@ -1049,6 +1049,36 @@ async function testGithubConnection() {
   }
 }
 
+/* Remplace les champs vides par les valeurs de DEFAULT_DATA avant publication.
+   Évite que portfolio-data.json contienne image:"" qui cache les chemins par défaut. */
+function fillEmptyWithDefaults(data) {
+  const defaults = getDefaultData();
+  function fill(def, val) {
+    if (val === null || val === undefined || val === '') return def;
+    if (typeof val !== 'object') return val;
+    if (Array.isArray(val)) {
+      if (val.length === 0) return def;
+      return val.map((item, i) => {
+        const defItem = Array.isArray(def) ? (def[i] || def[0] || {}) : (def || {});
+        return fill(defItem, item);
+      });
+    }
+    const result = {};
+    const allKeys = new Set([...Object.keys(def || {}), ...Object.keys(val)]);
+    for (const k of allKeys) {
+      if (val[k] === '' || val[k] === null || val[k] === undefined) {
+        result[k] = (def && def[k] !== undefined) ? def[k] : val[k];
+      } else if (typeof val[k] === 'object' && val[k] !== null) {
+        result[k] = fill(def ? def[k] : undefined, val[k]);
+      } else {
+        result[k] = val[k];
+      }
+    }
+    return result;
+  }
+  return fill(defaults, data);
+}
+
 async function publishToGitHub() {
   const cfg = loadGithubConfig();
   if (!cfg.user || !cfg.repo || !cfg.token) {
@@ -1072,8 +1102,9 @@ async function publishToGitHub() {
 
   try {
     // Collecter l'état actuel du formulaire (inclut les images chargées en mémoire)
-    const data = collectAllData();
-    saveDataLocal(data); // Sauvegarder sans base64 (évite quota localStorage)
+    const rawData = collectAllData();
+    saveDataLocal(rawData); // Sauvegarder sans base64 (évite quota localStorage)
+    const data = fillEmptyWithDefaults(rawData); // Remplir les champs vides avec DEFAULT_DATA
     logProgress(`Publication → ${cfg.user}/${cfg.repo} (${BRANCH})`);
     setProgress(5);
 
@@ -1182,8 +1213,9 @@ async function deployFullSite() {
     logProgress('Étape 2/3 — Images…');
     setProgress(50);
     // Collecter l'état actuel du formulaire (inclut les images chargées en mémoire)
-    const data = collectAllData();
-    saveDataLocal(data); // Sauvegarder sans base64 (évite quota localStorage)
+    const rawData = collectAllData();
+    saveDataLocal(rawData); // Sauvegarder sans base64 (évite quota localStorage)
+    const data = fillEmptyWithDefaults(rawData); // Remplir les champs vides avec DEFAULT_DATA
     const { processed: processedData, count: imgCount } = await uploadImagesInData(
       data, BASE, BRANCH, HEADERS, logProgress
     );
