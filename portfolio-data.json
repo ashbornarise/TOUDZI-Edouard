@@ -1,20 +1,20 @@
 {
   "hero": {
-    "subtitle": "GMP — ESIG Global Success",
+    "subtitle": "Portfolio Professionnel",
     "name": "TOUDJI",
-    "firstname": "KOKOUVI ÉDOUARD",
-    "title": "Génie Mécanique & Productique",
-    "description": "Étudiant en GMP, passionné par la conception mécanique, l'automatisation industrielle et les solutions techniques innovantes. Disponible pour stages et opportunités.",
+    "firstname": "Edouard",
+    "title": "Ingénieur | Innovateur",
+    "description": "Passionné par les solutions techniques innovantes.",
     "cvLink": "Media/cv.pdf",
-    "photo": "",
+    "photo": "uploads/img_1771847044156_1.jpeg",
     "stats": [
       {
-        "num": "4",
-        "label": "SAE réalisées"
+        "num": "5+",
+        "label": "Projets"
       },
       {
-        "num": "2+",
-        "label": "Ans d'études"
+        "num": "3+",
+        "label": "Ans études"
       },
       {
         "num": "∞",
@@ -260,7 +260,7 @@
     }
   ],
   "objective": {
-    "title": "Mon Objectif Professionnel",
+    "title": "Mon Objectif",
     "text": "Je souhaite mettre mes compétences en GMP au service de projets innovants et durables, en contribuant à des solutions techniques rigoureuses qui ont un impact réel sur l'industrie et la société.\n\nJe cherche à intégrer un environnement stimulant où je pourrai continuer à apprendre, à progresser et à relever des défis techniques ambitieux."
   },
   "contact": {
