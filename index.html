@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ATTOH-MENSAH Yao Pédro-Ebenezer — Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Accent line -->
+  <div class="accent-line"></div>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a href="#hero" class="nav-logo">ATTOH-MENSAH</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">À propos</a></li>
+      <li><a href="#skills">Compétences</a></li>
+      <li><a href="#experience">Expérience</a></li>
+      <li><a href="#projects">Projets</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="circuit-bg">
+      <svg viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#39d353">
+        <rect x="100" y="50" width="600" height="800" rx="4" stroke-width="0.5"/>
+        <line x1="100" y1="200" x2="700" y2="200" stroke-width="0.4"/>
+        <line x1="100" y1="400" x2="700" y2="400" stroke-width="0.4"/>
+        <line x1="100" y1="600" x2="700" y2="600" stroke-width="0.4"/>
+        <line x1="300" y1="50" x2="300" y2="850" stroke-width="0.4"/>
+        <line x1="500" y1="50" x2="500" y2="850" stroke-width="0.4"/>
+        <circle cx="300" cy="200" r="6" stroke-width="1"/>
+        <circle cx="500" cy="400" r="6" stroke-width="1"/>
+        <circle cx="300" cy="600" r="6" stroke-width="1"/>
+        <rect x="250" y="170" width="100" height="60" rx="2" stroke-width="0.6"/>
+        <rect x="450" y="370" width="100" height="60" rx="2" stroke-width="0.6"/>
+        <circle cx="400" cy="125" r="30" stroke-width="0.5"/>
+        <circle cx="400" cy="125" r="20" stroke-width="0.5"/>
+      </svg>
+    </div>
+
+    <div class="hero-text">
+      <div class="hero-label">Portfolio Professionnel</div>
+      <h1 class="hero-name">
+        ATTOH-MENSAH
+        <span class="highlight">YAO PÉDRO-EBENEZER</span>
+      </h1>
+      <p class="hero-title">Ingénieur | Innovateur</p>
+      <p class="hero-desc">
+        Passionné par les solutions techniques innovantes et les défis complexes. Disponible pour stages et opportunités professionnelles.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">Voir mes projets →</a>
+        <a href="Media/cv.pdf" class="btn btn-outline btn-cv" target="_blank">Télécharger mon CV</a>
+        <a href="#contact" class="btn btn-outline">Me contacter</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">5+</div><div class="stat-label">Projets réalisés</div></div>
+        <div><div class="stat-num">3+</div><div class="stat-label">Ans d'études</div></div>
+        <div><div class="stat-num">∞</div><div class="stat-label">Motivation</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="photo-wrap">
+        <div class="photo-frame-inner">
+          <div class="photo-placeholder">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+            <p>Votre photo</p>
+            <p>Media/photo.jpg</p>
+          </div>
+        </div>
+      </div>
+      <p class="photo-caption">Portfolio Professionnel</p>
+    </div>
+
+    <div class="scroll-down">
+      <span>Scroll</span>
+      <div class="scroll-arrow-line"></div>
+    </div>
+  </section>
+
+  <!-- ── INTRODUCTION ── -->
+  <section id="introduction">
+    <div class="section-header reveal">
+      <span class="section-num">01 /</span>
+      <h2 class="section-title">Introduction</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="intro-grid">
+      <div class="reveal">
+        <div class="intro-title">Qui suis-je ?</div>
+        <div class="intro-text"></div>
+      </div>
+      <div class="reveal">
+        <div class="intro-img-wrap">
+          <div class="intro-img-placeholder">Photo d'introduction</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── À PROPOS ── -->
+  <section id="about">
+    <div class="section-header reveal">
+      <span class="section-num">02 /</span>
+      <h2 class="section-title">À Propos</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-img-side reveal">
+      <div class="about-img-placeholder">Votre photo</div>
+    </div>
+    <div class="about-content">
+      <div class="about-text reveal"></div>
+      <div class="about-cols">
+        <div class="reveal">
+          <div class="about-col-title">Qualités</div>
+          <ul class="about-list about-qualities"></ul>
+        </div>
+        <div class="reveal">
+          <div class="about-col-title">Valeurs</div>
+          <ul class="about-list about-values"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ÉDUCATION ── -->
+  <section id="education">
+    <div class="section-header reveal">
+      <span class="section-num">03 /</span>
+      <h2 class="section-title">Éducation</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="timeline">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── COMPÉTENCES ── -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <span class="section-num">04 /</span>
+      <h2 class="section-title">Compétences</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── EXPÉRIENCE ── -->
+  <section id="experience">
+    <div class="section-header reveal">
+      <span class="section-num">05 /</span>
+      <h2 class="section-title">Expérience</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="exp-list">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── PROJETS ── -->
+  <section id="projects">
+    <div class="section-header reveal">
+      <span class="section-num">06 /</span>
+      <h2 class="section-title">Projets</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── TÉMOIGNAGES ── -->
+  <section id="testimonials">
+    <div class="section-header reveal">
+      <span class="section-num">07 /</span>
+      <h2 class="section-title">Témoignages</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="testimonials-grid">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── BLOG ── -->
+  <section id="blog">
+    <div class="section-header reveal">
+      <span class="section-num">08 /</span>
+      <h2 class="section-title">Blog &amp; Articles</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="blog-grid">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── FEUILLE DE ROUTE ── -->
+  <section id="roadmap">
+    <div class="section-header reveal">
+      <span class="section-num">09 /</span>
+      <h2 class="section-title">Feuille de Route</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="roadmap-list">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── INSPIRATIONS ── -->
+  <section id="inspirations">
+    <div class="section-header reveal">
+      <span class="section-num">10 /</span>
+      <h2 class="section-title">Inspirations</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="inspirations-grid">
+      <!-- populated by main.js -->
+    </div>
+  </section>
+
+  <!-- ── OBJECTIF ── -->
+  <section id="objective">
+    <div class="section-header reveal">
+      <span class="section-num">11 /</span>
+      <h2 class="section-title">Objectif</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="objective-box reveal">
+      <div class="objective-title">Mon Objectif Professionnel</div>
+      <div class="objective-text"></div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="section-header reveal">
+      <span class="section-num">12 /</span>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-intro reveal">
+          Disponible pour des opportunités professionnelles, des collaborations et des projets innovants.
+        </p>
+        <div class="contact-items">
+          <div class="contact-item reveal" id="contact-email">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-val"><a href="#">votre.email@exemple.com</a></div>
+            </div>
+          </div>
+
+          <div class="contact-item reveal" id="contact-phone">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 5.62 5.62l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 15.8l.92 1.12z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Téléphone</div>
+              <div class="contact-val"><a href="#">+00 00 00 00 00</a></div>
+            </div>
+          </div>
+
+          <div class="contact-item reveal" id="contact-address">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Localisation</div>
+              <div class="contact-val">Lomé, Togo</div>
+            </div>
+          </div>
+
+          <a class="contact-item reveal" id="contact-ig" href="#" target="_blank" style="display:none;">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Instagram</div>
+              <div class="contact-val">Suivre sur Instagram</div>
+            </div>
+          </a>
+
+          <a class="contact-item reveal" id="contact-li" href="#" target="_blank" style="display:none;">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">LinkedIn</div>
+              <div class="contact-val">Voir le profil</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <div class="form-field">
+          <label for="cf-name">Nom complet</label>
+          <input type="text" id="cf-name" placeholder="Votre nom"/>
+        </div>
+        <div class="form-field">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" placeholder="votre@email.com"/>
+        </div>
+        <div class="form-field">
+          <label for="cf-subject">Sujet</label>
+          <input type="text" id="cf-subject" placeholder="Objet de votre message"/>
+        </div>
+        <div class="form-field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" rows="5" placeholder="Votre message…"></textarea>
+        </div>
+        <button class="form-btn">Envoyer le message →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div>
+      <p>© 2025 <span>ATTOH-MENSAH Yao Pédro-Ebenezer</span></p>
+      <p style="margin-top:0.3rem;">Conçu avec précision · Portfolio Professionnel</p>
+    </div>
+    <div class="footer-right">
+      <span>HTML5 · CSS3 · JavaScript</span>
+      <a href="admin.html" class="footer-admin-link">🔒 Admin</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

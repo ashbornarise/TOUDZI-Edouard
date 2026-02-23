@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — ATTOH-MENSAH Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ── LOGIN PAGE ── -->
+<div class="login-page" id="login-page">
+  <div class="login-box">
+    <div class="login-logo">ATTOH-MENSAH</div>
+    <div class="login-subtitle">Panneau d'administration</div>
+    <form id="login-form">
+      <div class="login-field">
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <div class="login-error">Mot de passe incorrect. Réessayez.</div>
+      <button type="submit" class="login-btn">Se connecter →</button>
+    </form>
+    <p style="margin-top:1.5rem; font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--muted); opacity:0.6;">
+      Mot de passe par défaut : admin2026
+    </p>
+  </div>
+</div>
+
+<!-- ── ADMIN APP ── -->
+<div class="admin-layout" id="admin-app" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">ATTOH-MENSAH</div>
+      <div class="sidebar-subtitle">Panneau Admin</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Contenu</div>
+      <div class="sidebar-nav-item" data-section="hero">
+        <span class="nav-icon">🏠</span> Accueil (Hero)
+      </div>
+      <div class="sidebar-nav-item" data-section="introduction">
+        <span class="nav-icon">👋</span> Introduction
+      </div>
+      <div class="sidebar-nav-item" data-section="about">
+        <span class="nav-icon">👤</span> À propos
+      </div>
+      <div class="sidebar-nav-item" data-section="education">
+        <span class="nav-icon">🎓</span> Éducation
+      </div>
+      <div class="sidebar-nav-item" data-section="skills">
+        <span class="nav-icon">⚙️</span> Compétences
+      </div>
+      <div class="sidebar-nav-item" data-section="experience">
+        <span class="nav-icon">💼</span> Expérience
+      </div>
+      <div class="sidebar-nav-item" data-section="projects">
+        <span class="nav-icon">🚀</span> Projets
+      </div>
+      <div class="sidebar-nav-item" data-section="testimonials">
+        <span class="nav-icon">💬</span> Témoignages
+      </div>
+      <div class="sidebar-nav-item" data-section="blog">
+        <span class="nav-icon">📝</span> Blog &amp; Articles
+      </div>
+      <div class="sidebar-nav-item" data-section="roadmap">
+        <span class="nav-icon">🗺️</span> Feuille de route
+      </div>
+      <div class="sidebar-nav-item" data-section="inspirations">
+        <span class="nav-icon">✨</span> Inspirations
+      </div>
+      <div class="sidebar-nav-item" data-section="objective">
+        <span class="nav-icon">🎯</span> Objectif
+      </div>
+      <div class="sidebar-nav-item" data-section="contact">
+        <span class="nav-icon">📧</span> Contact
+      </div>
+
+      <div class="sidebar-section-label">Publication</div>
+      <div class="sidebar-nav-item" data-section="github">
+        <span class="nav-icon">☁️</span> Publication GitHub
+      </div>
+      <div class="sidebar-nav-item" data-section="settings">
+        <span class="nav-icon">🔑</span> Paramètres
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="index.html" target="_blank" class="sidebar-preview-btn">
+        👁 Prévisualiser le site
+      </a>
+      <button class="sidebar-logout">✕ Se déconnecter</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+    <!-- Top bar -->
+    <div class="admin-topbar">
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <button class="topbar-menu-btn" style="display:none;">☰</button>
+        <h1 class="topbar-title">Accueil (Hero)</h1>
+      </div>
+      <div class="topbar-actions">
+        <button class="admin-btn admin-btn-outline" id="btn-save">💾 Sauvegarder</button>
+        <button class="admin-btn admin-btn-publish" onclick="document.querySelector('[data-section=github]').click()">
+          🚀 Publier sur GitHub
+        </button>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : HERO -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-hero">
+      <div class="admin-section-header">
+        <h2>Accueil (Hero)</h2>
+        <p>Section principale visible dès l'arrivée sur le site</p>
+      </div>
+
+      <div class="form-grid">
+        <div class="admin-field">
+          <label>Sous-titre (ex : Portfolio Professionnel)</label>
+          <input id="hero-subtitle" placeholder="Portfolio Professionnel">
+        </div>
+        <div class="admin-field">
+          <label>Nom de famille</label>
+          <input id="hero-name" placeholder="ATTOH-MENSAH">
+        </div>
+        <div class="admin-field">
+          <label>Prénom(s)</label>
+          <input id="hero-firstname" placeholder="Yao Pédro-Ebenezer">
+        </div>
+        <div class="admin-field">
+          <label>Titre / Profession</label>
+          <input id="hero-title" placeholder="Ingénieur | Innovateur">
+        </div>
+      </div>
+
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Description / Accroche</label>
+        <textarea id="hero-description" rows="3" placeholder="Courte présentation…"></textarea>
+      </div>
+
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Lien vers le CV (chemin relatif ou URL)</label>
+        <input id="hero-cvlink" placeholder="Media/cv.pdf">
+        <span class="field-hint">Laisser vide pour masquer le bouton CV</span>
+      </div>
+
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Photo de profil</label>
+        <div id="hero-photo-field"></div>
+      </div>
+
+      <div class="admin-divider"></div>
+      <h3 style="font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:var(--white); margin-bottom:1rem; letter-spacing:0.06em;">Statistiques</h3>
+      <div id="hero-stats-list"></div>
+      <button class="add-item-btn" id="hero-stats-add">+ Ajouter une statistique</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : INTRODUCTION -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-introduction">
+      <div class="admin-section-header">
+        <h2>Introduction</h2>
+        <p>Section de présentation générale</p>
+      </div>
+
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Titre de la section</label>
+        <input id="intro-title" placeholder="Qui suis-je ?">
+      </div>
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Texte (séparez les paragraphes par une ligne vide)</label>
+        <textarea id="intro-text" rows="8" placeholder="Je suis…"></textarea>
+      </div>
+      <div class="admin-field">
+        <label>Image d'introduction</label>
+        <div id="intro-image-field"></div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : À PROPOS -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-about">
+      <div class="admin-section-header">
+        <h2>À propos</h2>
+        <p>Présentation détaillée, qualités et valeurs</p>
+      </div>
+
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Texte de présentation (paragraphes séparés par une ligne vide)</label>
+        <textarea id="about-text" rows="8"></textarea>
+      </div>
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Photo</label>
+        <div id="about-image-field"></div>
+      </div>
+
+      <div class="form-grid">
+        <div class="admin-field">
+          <label>Qualités (appuyez sur Entrée pour ajouter)</label>
+          <div id="about-qualities-wrap"></div>
+        </div>
+        <div class="admin-field">
+          <label>Valeurs (appuyez sur Entrée pour ajouter)</label>
+          <div id="about-values-wrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : ÉDUCATION -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-education">
+      <div class="admin-section-header">
+        <h2>Éducation</h2>
+        <p>Parcours scolaire et universitaire</p>
+      </div>
+      <div class="card-list" id="edu-list"></div>
+      <button class="add-item-btn" id="edu-add">+ Ajouter une formation</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : COMPÉTENCES -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-skills">
+      <div class="admin-section-header">
+        <h2>Compétences</h2>
+        <p>Catégories de compétences et tags</p>
+      </div>
+      <div class="card-list" id="skills-list"></div>
+      <button class="add-item-btn" id="skill-add">+ Ajouter une compétence</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : EXPÉRIENCE -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-experience">
+      <div class="admin-section-header">
+        <h2>Expérience</h2>
+        <p>Postes, stages, projets professionnels</p>
+      </div>
+      <div class="card-list" id="exp-list-admin"></div>
+      <button class="add-item-btn" id="exp-add">+ Ajouter une expérience</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : PROJETS -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-projects">
+      <div class="admin-section-header">
+        <h2>Projets</h2>
+        <p>Vos réalisations et projets</p>
+      </div>
+      <div class="card-list" id="proj-list-admin"></div>
+      <button class="add-item-btn" id="proj-add">+ Ajouter un projet</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : TÉMOIGNAGES -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-testimonials">
+      <div class="admin-section-header">
+        <h2>Témoignages</h2>
+        <p>Avis de collaborateurs, professeurs, encadrants</p>
+      </div>
+      <div class="card-list" id="testi-list"></div>
+      <button class="add-item-btn" id="testi-add">+ Ajouter un témoignage</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : BLOG -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-blog">
+      <div class="admin-section-header">
+        <h2>Blog &amp; Articles</h2>
+        <p>Vos articles et publications</p>
+      </div>
+      <div class="card-list" id="blog-list-admin"></div>
+      <button class="add-item-btn" id="blog-add">+ Ajouter un article</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : FEUILLE DE ROUTE -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-roadmap">
+      <div class="admin-section-header">
+        <h2>Feuille de route</h2>
+        <p>Votre parcours et vos jalons</p>
+      </div>
+      <div class="card-list" id="road-list"></div>
+      <button class="add-item-btn" id="road-add">+ Ajouter une étape</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : INSPIRATIONS -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-inspirations">
+      <div class="admin-section-header">
+        <h2>Inspirations</h2>
+        <p>Les personnes qui vous inspirent</p>
+      </div>
+      <div class="card-list" id="insp-list"></div>
+      <button class="add-item-btn" id="insp-add">+ Ajouter une inspiration</button>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : OBJECTIF -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-objective">
+      <div class="admin-section-header">
+        <h2>Objectif professionnel</h2>
+        <p>Votre vision et vos ambitions</p>
+      </div>
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Titre</label>
+        <input id="obj-title" placeholder="Mon Objectif Professionnel">
+      </div>
+      <div class="admin-field">
+        <label>Texte (paragraphes séparés par une ligne vide)</label>
+        <textarea id="obj-text" rows="8"></textarea>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : CONTACT -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-contact">
+      <div class="admin-section-header">
+        <h2>Contact</h2>
+        <p>Vos coordonnées et liens sociaux</p>
+      </div>
+      <div class="form-grid">
+        <div class="admin-field">
+          <label>Email</label>
+          <input id="ct-email" type="email" placeholder="votre@email.com">
+        </div>
+        <div class="admin-field">
+          <label>Téléphone / WhatsApp</label>
+          <input id="ct-phone" placeholder="+228 00 00 00 00">
+        </div>
+        <div class="admin-field">
+          <label>Adresse / Localisation</label>
+          <input id="ct-address" placeholder="Lomé, Togo">
+        </div>
+      </div>
+      <div class="admin-divider"></div>
+      <h3 style="font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:var(--white); margin-bottom:1rem; letter-spacing:0.06em;">Réseaux sociaux</h3>
+      <div class="form-grid">
+        <div class="admin-field">
+          <label>Instagram (URL complète)</label>
+          <input id="ct-instagram" placeholder="https://instagram.com/votre_compte">
+        </div>
+        <div class="admin-field">
+          <label>LinkedIn (URL complète)</label>
+          <input id="ct-linkedin" placeholder="https://linkedin.com/in/votre-profil">
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : GITHUB -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-github">
+      <div class="admin-section-header">
+        <h2>Publication GitHub</h2>
+        <p>Publiez votre portfolio sur GitHub Pages</p>
+      </div>
+
+      <div class="info-box">
+        <strong>Comment ça fonctionne :</strong><br>
+        1. Créez un token GitHub (Settings → Developer settings → Personal access tokens → Tokens classic) avec la permission <strong>repo</strong><br>
+        2. Remplissez les champs ci-dessous et cliquez <strong>Enregistrer</strong><br>
+        3. Sauvegardez vos données (bouton vert en haut), puis cliquez <strong>Publier</strong><br>
+        4. Attendez ~2 minutes pour que GitHub Pages se mette à jour
+      </div>
+
+      <div class="github-status">
+        <div class="github-status-dot"></div>
+        <div class="github-status-text">Non configuré</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="admin-field">
+          <label>Nom d'utilisateur GitHub</label>
+          <input id="gh-user" placeholder="votre-username">
+        </div>
+        <div class="admin-field">
+          <label>Nom du dépôt</label>
+          <input id="gh-repo" placeholder="Portofolio-ATTOH-MENSAH">
+        </div>
+        <div class="admin-field">
+          <label>Branche</label>
+          <input id="gh-branch" value="main" placeholder="main">
+        </div>
+      </div>
+      <div class="admin-field" style="margin-bottom:1.5rem;">
+        <label>Token GitHub (ghp_...)</label>
+        <input id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        <span class="field-hint">Votre token est stocké localement dans votre navigateur uniquement.</span>
+      </div>
+
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+        <button class="admin-btn admin-btn-primary" id="gh-save">💾 Enregistrer les paramètres</button>
+        <button class="admin-btn admin-btn-publish" id="gh-publish">🚀 Publier sur GitHub</button>
+      </div>
+
+      <div class="publish-progress" id="publish-progress">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill"></div>
+        </div>
+        <div class="progress-log"></div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────── -->
+    <!-- PANEL : PARAMÈTRES -->
+    <!-- ────────────────────────────────────────────────── -->
+    <div class="admin-panel" id="panel-settings">
+      <div class="admin-section-header">
+        <h2>Paramètres</h2>
+        <p>Changer le mot de passe d'administration</p>
+      </div>
+
+      <div style="max-width:400px;">
+        <div class="admin-field" style="margin-bottom:1.2rem;">
+          <label>Mot de passe actuel</label>
+          <input type="password" id="pwd-current" placeholder="••••••••">
+        </div>
+        <div class="admin-field" style="margin-bottom:1.2rem;">
+          <label>Nouveau mot de passe</label>
+          <input type="password" id="pwd-new" placeholder="••••••••">
+        </div>
+        <div class="admin-field" style="margin-bottom:1.5rem;">
+          <label>Confirmer le nouveau mot de passe</label>
+          <input type="password" id="pwd-confirm" placeholder="••••••••">
+        </div>
+        <button class="admin-btn admin-btn-primary" id="btn-change-password">
+          Changer le mot de passe
+        </button>
+      </div>
+
+      <div class="admin-divider"></div>
+
+      <div class="info-box">
+        <strong>Dépannage :</strong><br>
+        Si vous avez oublié votre mot de passe, ouvrez la console du navigateur (F12) et tapez :<br>
+        <code style="color:var(--accent);">localStorage.removeItem('portfolio_admin_auth')</code><br>
+        puis rechargez la page. Le mot de passe par défaut <strong>admin2026</strong> sera restauré.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container"></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
